@@ -29,3 +29,25 @@ Split into two commits: initial project setup, then prompt history tracking sepa
 Update prompt history instructions to redact personal information and security-sensitive details. Update the Stop hook with the same redaction instructions.
 
 Fix the broken Stop hook — `additionalContext` isn't supported on Stop events. Switch to a `UserPromptSubmit` hook instead.
+
+Brainstorm the v1 implementation plan. Decided on: track only previous page, inline inject gap stories at top of list with no visual distinction, use actual rank numbers from fresh fetch, re-fetch when next page loads, HTML fetch+parse over API, only target `/news` and `/` for v1.
+
+Create a detailed implementation plan with verified DOM structure and automated testing strategy.
+
+Generate a reference document detailing research on the HN DOM structure, selectors, pagination, URL patterns, and API considerations. Save to `docs/HN_DOM_REFERENCE.md`.
+
+Copy the current implementation plan to `docs/plans/v1_gap_detection_plan.md`.
+
+Approved the v1 implementation plan. Implemented: added `storage` permission to manifest.json, created `background.js` service worker (sets session storage access level for content scripts), wrote full `content.js` (parse stories from DOM, store snapshot, fetch+diff previous page, inject gap stories), expanded `test/test.js` to 7 test cases with 12 assertions (all passing), and created `test/demo.js` for visual inspection of injected stories.
+
+Broadened the prompt history system to track any user directive that causes meaningful state changes (file edits, commits, branch ops, etc.), not just typed prompts. Updated CLAUDE.md instructions and the UserPromptSubmit hook message.
+
+Document implementation deviations from the original plan in `docs/plans/v1_gap_detection_deviations.md`. Five deviations identified: background service worker added for storage access, table located via parentElement instead of selector, DOM nodes used instead of HTML strings, test storage access via callback-style API, and demo.js added for visual testing.
+
+Move implementation plan and deviations files into `docs/plans/` and rename to include "v1_gap_detection" prefix.
+
+Add a PostToolUse hook on ExitPlanMode that reminds Claude to copy the plan file to `docs/plans/` and to create a deviations doc upon implementation completion. Added corresponding instructions to CLAUDE.md.
+
+Create `docs/FUTURE_WORK.md` with items deferred from v1: duplicate detection (stories that dropped down), multi-page tracking, and support for other listing pages.
+
+Create `docs/HOW_IT_WORKS.md` documenting the extension's architecture, lifecycle, storage schema, DOM interaction, and limitations. Update `README.md` with the problem description, how it works, testing commands, and current scope.

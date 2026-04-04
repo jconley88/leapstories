@@ -3,7 +3,10 @@
   "name": "PageGap",
   "version": "0.1.0",
   "description": "Catch Hacker News stories missed between page navigations",
-  "permissions": [],
+  "permissions": ["storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": ["https://news.ycombinator.com/*"],
