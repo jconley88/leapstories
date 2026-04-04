@@ -38,3 +38,9 @@ Maintain two files tracking any user directive that results in meaningful state 
 
 Do not include discussion, questions, or directives that did not lead to state changes.
 Redact or omit personal information (names, emails, paths containing usernames, API keys, etc.) and security-sensitive details.
+
+## Plan Documentation
+
+When a plan is approved (via ExitPlanMode), copy the plan file to `docs/plans/` using the default plan filename.
+
+When implementation of an approved plan is complete, create a deviations document in `docs/plans/` alongside the plan file. Name it by replacing `_plan` or the plan suffix with `_deviations` in the filename. Document any differences between the plan and what was actually built, with explanations for why each deviation occurred. If there were no deviations, note that explicitly in a short file.
