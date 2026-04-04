@@ -83,3 +83,7 @@ Reduced synthetic fixtures from 30 to 5 stories per page. Added `STORIES_PER_PAG
 Extracted real fixture data to `test/fixtures/index.js` — exports `page1HTML`, `page2HTML`, `page1IDs`, and `page2IDs`. Removed `fs` import and inline ID arrays from `test/test.js`, replaced with `require("./fixtures")`.
 
 Added per-test timing output to test runner. Diagnosed test 5 taking 30 seconds — `page.waitForFunction()` had swapped argument order (`options` and `arg` reversed). Playwright's signature is `(fn, arg, options)` but we passed `(fn, {timeout: 5000}, STORIES_PER_PAGE)`. The timeout was ignored (defaulting to 30s) and the page function's argument was a truthy object instead of the story count. Fixed argument order. Test 5 now completes in ~33ms.
+
+Fixed `test/demo.js` not showing gap stories. The modified page 1 snapshot was using `Date.now()` as the timestamp, so the dwell time check in `content.js` saw it as "just viewed" and skipped the gap detection fetch. Changed to `Date.now() - 120_000` to exceed the 60-second dwell threshold.
+
+Reduced `test/demo.js` wait times from 2000/2000/3000ms to 1000/1000/1500ms to speed up the demo flow.

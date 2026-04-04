@@ -16,7 +16,7 @@ const extensionPath = path.join(__dirname, "..");
 
   // Visit page 1 to store snapshot
   await page.goto("https://news.ycombinator.com/news?p=1", { waitUntil: "load" });
-  await page.waitForTimeout(2000);
+  await page.waitForTimeout(1000);
 
   // Get service worker to modify storage
   let sw = context.serviceWorkers()[0];
@@ -26,7 +26,7 @@ const extensionPath = path.join(__dirname, "..");
 
   // Get page 2 story IDs so we can create overlap for duplicate demo
   await page.goto("https://news.ycombinator.com/news?p=2", { waitUntil: "load" });
-  await page.waitForTimeout(2000);
+  await page.waitForTimeout(1000);
 
   const storage2 = await sw.evaluate(
     () => new Promise((resolve) => chrome.storage.session.get("page_2", resolve))
@@ -42,7 +42,7 @@ const extensionPath = path.join(__dirname, "..");
   const trimmedIds = [...storage1.page_1.storyIds.slice(3), ...page2Ids.slice(0, 3)];
   await sw.evaluate(
     (d) => new Promise((resolve) => chrome.storage.session.set(d, resolve)),
-    { page_1: { storyIds: trimmedIds, timestamp: Date.now() } }
+    { page_1: { storyIds: trimmedIds, timestamp: Date.now() - 120_000 } }
   );
 
   console.log(`Modified page_1 snapshot: removed 3 IDs (gap), added 3 page 2 IDs (duplicates).`);
@@ -52,7 +52,7 @@ const extensionPath = path.join(__dirname, "..");
 
   // Navigate to page 2 — extension will detect gaps and duplicates
   await page.goto("https://news.ycombinator.com/news?p=2", { waitUntil: "load" });
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(1500);
 
   const total = await page.$$eval("tr.athing.submission", (rows) => rows.length);
   const dups = await page.$$eval("tr.athing.submission.pagegap-duplicate", (rows) => rows.length);
