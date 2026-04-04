@@ -96,4 +96,11 @@
     if (subtextClone) table.insertBefore(subtextClone, firstStory);
     if (spacerClone) table.insertBefore(spacerClone, firstStory);
   }
+
+  // Update snapshot to include gap stories so downstream pages treat them as "seen"
+  const gapIds = gapStories.map((s) => s.id);
+  storyIds.push(...gapIds);
+  await chrome.storage.session.set({
+    [`page_${pageNum}`]: { storyIds, timestamp: Date.now() },
+  });
 })();

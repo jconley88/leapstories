@@ -451,6 +451,41 @@ async function runTests() {
     );
 
     page2IdsOverride = null;
+
+    // --- Test 14: Gap story IDs added to page snapshot ---
+    startTest("Test 14: Gap story IDs added to page snapshot after injection");
+    await clearStorageSession(context);
+    const trimmedIds14 = PAGE1_IDS.slice(3); // Remove first 3 to create gap
+    await setStorageSession(context, {
+      page_1: { storyIds: trimmedIds14, timestamp: Date.now() - 120_000 },
+      pagegap_dwell: 0,
+    });
+
+    await page.goto("https://news.ycombinator.com/news?p=2", { waitUntil: "load" });
+    await page.waitForSelector("tr.athing.submission", { timeout: 5000 });
+    try {
+      await page.waitForFunction(
+        (n) => document.querySelectorAll("tr.athing.submission").length > n,
+        STORIES_PER_PAGE,
+        { timeout: 5000 }
+      );
+    } catch {}
+    await page.waitForTimeout(500);
+
+    const storage14 = await getStorageSession(context);
+    const page2Snap = storage14 && storage14.page_2;
+    assert(page2Snap, "page_2 snapshot exists after gap injection");
+    if (page2Snap) {
+      const expectedGapIds14 = PAGE1_IDS.slice(0, 3);
+      const hasGapIds = expectedGapIds14.every((id) => page2Snap.storyIds.includes(id));
+      assert(hasGapIds, "page_2 snapshot includes injected gap story IDs");
+      const hasOriginalIds = PAGE2_IDS.every((id) => page2Snap.storyIds.includes(id));
+      assert(hasOriginalIds, "page_2 snapshot still includes original story IDs");
+      assert(
+        page2Snap.storyIds.length === STORIES_PER_PAGE + expectedGapIds14.length,
+        `page_2 snapshot has ${STORIES_PER_PAGE + expectedGapIds14.length} total IDs (got ${page2Snap.storyIds.length})`
+      );
+    }
   } finally {
     await context.close();
   }

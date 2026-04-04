@@ -25,6 +25,7 @@ PageGap is a Manifest V3 Chrome extension with two files that run on `news.ycomb
 9. Diff: find stories in the fresh fetch that are **not** in the stored snapshot **and not already present on the current page**
 10. These are "gap stories" — they rose into page N-1 after the user left it (stories that also appear on the current page are excluded to avoid showing the same story twice)
 11. Inject gap stories at the top of the current page's DOM, before the first existing story
+12. Update the current page's stored snapshot to include the gap story IDs, so downstream pages (N+1) treat them as "seen" and won't resurface them as gaps or miss them in duplicate detection
 
 ### On page 1
 

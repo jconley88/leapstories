@@ -128,4 +128,10 @@ Fixed two grammar nits in CLAUDE.md prompt history instructions: "may have not b
 
 Removed PreToolUse auto-seal hook. Moved `---` divider and `## header` management back to manual instructions in CLAUDE.md and the UserPromptSubmit hook.
 
+## Add gap story IDs to page snapshot
+
+Reviewed project and `docs/HOW_IT_WORKS.md`. Discussed whether gap stories should be tracked after injection — should they be added to the current page's snapshot, tracked separately, or ignored? Decided gap story IDs should be appended to the current page's snapshot so downstream pages treat them as "seen."
+
+Planned and approved `docs/plans/squishy-chasing-kettle.md`. Implemented: after gap injection in `content.js`, gap story IDs are appended to `storyIds` and the page snapshot is re-written to session storage. Added Test 14 (4 assertions) verifying gap IDs appear in the updated snapshot. Updated `docs/HOW_IT_WORKS.md` with new step 12. All 30 assertions pass.
+
 ---
