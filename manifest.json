@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "PageGap",
+  "version": "0.1.0",
+  "description": "Catch Hacker News stories missed between page navigations",
+  "permissions": [],
+  "content_scripts": [
+    {
+      "matches": ["https://news.ycombinator.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
