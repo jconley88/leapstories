@@ -87,3 +87,11 @@ Added per-test timing output to test runner. Diagnosed test 5 taking 30 seconds 
 Fixed `test/demo.js` not showing gap stories. The modified page 1 snapshot was using `Date.now()` as the timestamp, so the dwell time check in `content.js` saw it as "just viewed" and skipped the gap detection fetch. Changed to `Date.now() - 120_000` to exceed the 60-second dwell threshold.
 
 Reduced `test/demo.js` wait times from 2000/2000/3000ms to 1000/1000/1500ms to speed up the demo flow.
+
+Identified and fixed a race condition where a gap story could appear twice — once injected at the top and once natively in the current page list. Planned and implemented in `docs/plans/quiet-booping-diffie.md`. Added `currentStoryIds` set to `content.js` and updated the `gapStories` filter to exclude stories already present on the current page.
+
+Ran tests (all 24 passed) and added Test 13 to cover the race condition fix: a story present on both the fresh previous page and the current page should not be injected as a gap. Added `page2IdsOverride` to the route handler for fine-grained fixture control. 26 tests, 26 assertions pass.
+
+Updated deviations doc, HOW_IT_WORKS.md, and README.md to reflect the race condition fix and new Test 13. Deviations doc notes the addition of Test 13 and `page2IdsOverride` as the only deviation from the plan. README test count updated to 13 tests / 26 assertions. HOW_IT_WORKS updated lifecycle step 9 and testing section.
+
+Committed race condition fix, test, plan docs, and supporting doc updates.

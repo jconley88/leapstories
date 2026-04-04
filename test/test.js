@@ -112,6 +112,7 @@ async function clearStorageSession(context) {
 
 // --- Route handler: serves synthetic fixtures by default ---
 let useRealFixtures = false;
+let page2IdsOverride = null; // when set, page 2 serves these IDs instead of PAGE2_IDS
 
 function routeHandler(route) {
   const url = new URL(route.request().url());
@@ -123,7 +124,7 @@ function routeHandler(route) {
       const html = pageParam === "2" ? realFixtures.page2HTML : realFixtures.page1HTML;
       route.fulfill({ body: html, contentType: "text/html" });
     } else {
-      const ids = pageParam === "2" ? PAGE2_IDS : PAGE1_IDS;
+      const ids = pageParam === "2" ? (page2IdsOverride ?? PAGE2_IDS) : PAGE1_IDS;
       const startRank = (parseInt(pageParam) - 1) * STORIES_PER_PAGE + 1;
       route.fulfill({ body: buildHNPage(ids, startRank), contentType: "text/html" });
     }
@@ -410,6 +411,46 @@ async function runTests() {
     }
 
     useRealFixtures = false;
+
+    // --- Test 13: Gap story already on current page is not injected ---
+    startTest("Test 13: Gap story already on current page is not injected");
+    await clearStorageSession(context);
+    // PAGE1_IDS[0] and [1] are potential gap stories (absent from snapshot)
+    const gapCandidates = PAGE1_IDS.slice(0, 2); // 40001, 40002
+    const snapshotIds13 = PAGE1_IDS.slice(2);     // 40003–40005 (what was seen)
+    // Page 2 includes gapCandidates[0] (simulates it dropping to current page)
+    page2IdsOverride = [gapCandidates[0], ...PAGE2_IDS.slice(0, STORIES_PER_PAGE - 1)];
+    await setStorageSession(context, {
+      page_1: { storyIds: snapshotIds13, timestamp: Date.now() - 120_000 },
+      pagegap_dwell: 0,
+    });
+
+    await page.goto("https://news.ycombinator.com/news?p=2", { waitUntil: "load" });
+    await page.waitForSelector("tr.athing.submission", { timeout: 5000 });
+    try {
+      await page.waitForFunction(
+        (n) => document.querySelectorAll("tr.athing.submission").length > n,
+        STORIES_PER_PAGE,
+        { timeout: 5000 }
+      );
+    } catch {
+      // gap injection may not happen — that's the expected outcome for gapCandidates[0]
+    }
+
+    const allIds13 = await page.$$eval("tr.athing.submission", (rows) => rows.map((r) => r.id));
+    // gapCandidates[1] (40002) should be injected — not on current page
+    assert(
+      allIds13.includes(gapCandidates[1]),
+      `genuine gap story (${gapCandidates[1]}) is injected`
+    );
+    // gapCandidates[0] (40001) is already on page 2 — should appear exactly once
+    const occurrences = allIds13.filter((id) => id === gapCandidates[0]).length;
+    assert(
+      occurrences === 1,
+      `story already on current page (${gapCandidates[0]}) appears exactly once, not injected again (got ${occurrences})`
+    );
+
+    page2IdsOverride = null;
   } finally {
     await context.close();
   }

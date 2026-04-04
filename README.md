@@ -25,7 +25,7 @@ PageGap records which stories you saw on each page. When you navigate to the nex
 ## Testing
 
 ```bash
-# Automated test suite (12 tests, 24 assertions) — uses local fixtures, no live network
+# Automated test suite (13 tests, 26 assertions) — uses local fixtures, no live network
 node test/test.js
 
 # Visual demo — simulates gap stories and leaves browser open for inspection

@@ -38,6 +38,7 @@
   if (!prevSnapshot) return;
 
   const prevSnapshotIds = new Set(prevSnapshot.storyIds);
+  const currentStoryIds = new Set(currentStories.map((s) => s.id));
 
   // Duplicate detection: mark stories on current page that were already on previous page
   const duplicateStories = currentStories.filter((s) => prevSnapshotIds.has(s.id));
@@ -70,7 +71,9 @@
 
   // Gap stories: in fresh previous page but NOT in the original snapshot
   // These rose into the previous page after we left it
-  const gapStories = freshStories.filter((s) => !prevSnapshotIds.has(s.id));
+  const gapStories = freshStories.filter(
+    (s) => !prevSnapshotIds.has(s.id) && !currentStoryIds.has(s.id)
+  );
 
   if (gapStories.length === 0) return;
 
