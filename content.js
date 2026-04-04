@@ -37,13 +37,22 @@
   const prevSnapshot = stored[prevKey];
   if (!prevSnapshot) return;
 
-  // Skip re-fetch if previous page was viewed too recently (default 60s, configurable via session storage)
+  const prevSnapshotIds = new Set(prevSnapshot.storyIds);
+
+  // Duplicate detection: mark stories on current page that were already on previous page
+  const duplicateStories = currentStories.filter((s) => prevSnapshotIds.has(s.id));
+  for (const dup of duplicateStories) {
+    dup.athingRow.classList.add("pagegap-duplicate");
+    if (dup.subtextRow) dup.subtextRow.classList.add("pagegap-duplicate");
+    const titleLink = dup.athingRow.querySelector(".titleline > a");
+    if (titleLink) titleLink.textContent = "seen on previous page — " + titleLink.textContent;
+  }
+
+  // Skip gap detection if previous page was viewed too recently (default 60s, configurable)
   const dwellConfig = await chrome.storage.session.get("pagegap_dwell");
   const dwellMs = dwellConfig.pagegap_dwell ?? 60_000;
   const elapsed = Date.now() - prevSnapshot.timestamp;
   if (elapsed < dwellMs) return;
-
-  const prevSnapshotIds = new Set(prevSnapshot.storyIds);
 
   // Fetch fresh copy of previous page
   let freshDoc;
@@ -72,7 +81,6 @@
   const table = firstStory.parentElement;
 
   for (const gap of gapStories) {
-    // Import nodes from the parsed document into our live document
     const athingClone = document.importNode(gap.athingRow, true);
     const subtextClone = gap.subtextRow
       ? document.importNode(gap.subtextRow, true)
@@ -81,7 +89,6 @@
       ? document.importNode(gap.spacerRow, true)
       : null;
 
-    // Insert before the first existing story (in order)
     table.insertBefore(athingClone, firstStory);
     if (subtextClone) table.insertBefore(subtextClone, firstStory);
     if (spacerClone) table.insertBefore(spacerClone, firstStory);

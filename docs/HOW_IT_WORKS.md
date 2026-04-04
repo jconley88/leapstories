@@ -78,11 +78,17 @@ Related rows are found by DOM traversal: `row.nextElementSibling` for subtext, t
 
 Gap stories are injected using `document.importNode()` to adopt nodes from the fetched document into the live DOM. All 3 rows (athing + subtext + spacer) are inserted before the first existing story, preserving their original rank numbers from the fresh fetch. No renumbering occurs — existing stories keep their numbers.
 
-## What it doesn't do (v1)
+## Duplicate detection
 
-- Detect stories that dropped down (duplicates)
+On page 2+, stories that appear on the current page and were also in the previous page's snapshot are marked as duplicates. These are stories that fell in rank between navigations, causing the user to see them twice.
+
+Duplicates get the `.pagegap-duplicate` CSS class (loaded via `pagegap.css` registered in the manifest), which reduces opacity to `0.4`. Their titles are also prefixed with "seen on previous page — ".
+
+Duplicate detection runs on every page 2+ load, even when the dwell time check skips gap detection.
+
+## What it doesn't do
+
 - Track across more than one page back
 - Run on `/newest`, `/front`, `/ask`, `/show`
-- Distinguish injected stories visually
 
 See `docs/FUTURE_WORK.md` for planned additions.

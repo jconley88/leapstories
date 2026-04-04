@@ -8,7 +8,7 @@ When browsing HN, stories shift rank constantly. By the time you finish page 1 a
 
 ## How it works
 
-PageGap records which stories you saw on each page. When you navigate to the next page, it silently re-fetches the previous page, compares it against your original snapshot, and injects any stories that rose into the gap at the top of your current page.
+PageGap records which stories you saw on each page. When you navigate to the next page, it silently re-fetches the previous page, compares it against your original snapshot, and injects any stories that rose into the gap at the top of your current page. Stories that fell from the previous page and appear as duplicates are dimmed.
 
 ## Install
 
@@ -25,7 +25,7 @@ PageGap records which stories you saw on each page. When you navigate to the nex
 ## Testing
 
 ```bash
-# Automated test suite (8 tests, 13 assertions)
+# Automated test suite (11 tests, 17 assertions)
 node test/test.js
 
 # Visual demo — simulates gap stories and leaves browser open for inspection

@@ -205,6 +205,86 @@ async function runTests() {
       `page 2 has exactly 30 stories when previous page viewed recently (got ${storyCountRecent})`
     );
 
+    // --- Test 9: Duplicate detection (simulated) ---
+    console.log("\nTest 9: Duplicate detection (simulated)");
+    await clearStorageSession(context);
+    await setStorageSession(context, { pagegap_dwell: 0 });
+
+    // Visit page 2 to learn its story IDs
+    await page.goto("https://news.ycombinator.com/news?p=2", { waitUntil: "load" });
+    await page.waitForTimeout(2000);
+
+    const storagePre9 = await getStorageSession(context);
+    const page2Ids = storagePre9.page_2.storyIds;
+
+    // Create a fake page_1 snapshot that includes 3 of page 2's story IDs
+    // This simulates those stories having been on page 1 when the user viewed it
+    const overlapIds = page2Ids.slice(0, 3);
+    const fakePage1Ids = [...Array(27).fill("fake_id"), ...overlapIds];
+    await setStorageSession(context, {
+      page_1: { storyIds: fakePage1Ids, timestamp: Date.now() - 120_000 },
+      pagegap_dwell: 0,
+    });
+
+    await page.goto("https://news.ycombinator.com/news?p=2", { waitUntil: "load" });
+    await page.waitForTimeout(3000);
+
+    const dupCount = await page.$$eval(
+      "tr.athing.submission.pagegap-duplicate",
+      (rows) => rows.length
+    );
+    assert(dupCount >= 3, `at least 3 stories marked as duplicate (got ${dupCount})`);
+
+    const dupIds = await page.$$eval(
+      "tr.athing.submission.pagegap-duplicate",
+      (rows) => rows.map((r) => r.id)
+    );
+    const allOverlap = overlapIds.every((id) => dupIds.includes(id));
+    assert(allOverlap, "correct stories are marked as duplicates");
+
+    // --- Test 10: Duplicates detected even when dwell time not met ---
+    console.log("\nTest 10: Duplicates detected even when dwell time not met");
+    await clearStorageSession(context);
+
+    // Visit page 2 to get its IDs
+    await page.goto("https://news.ycombinator.com/news?p=2", { waitUntil: "load" });
+    await page.waitForTimeout(2000);
+    const storagePre11 = await getStorageSession(context);
+    const page2Ids11 = storagePre11.page_2.storyIds;
+
+    // Create page_1 snapshot with overlap but RECENT timestamp + HIGH dwell
+    const overlapIds11 = page2Ids11.slice(0, 2);
+    const fakePage1Ids11 = [...Array(28).fill("fake_id"), ...overlapIds11];
+    await setStorageSession(context, {
+      page_1: { storyIds: fakePage1Ids11, timestamp: Date.now() },
+      pagegap_dwell: 60_000,
+    });
+
+    await page.goto("https://news.ycombinator.com/news?p=2", { waitUntil: "load" });
+    await page.waitForTimeout(3000);
+
+    const dupCount11 = await page.$$eval(
+      "tr.athing.submission.pagegap-duplicate",
+      (rows) => rows.length
+    );
+    assert(dupCount11 >= 2, `duplicates marked even with dwell skip (got ${dupCount11})`);
+
+    const totalStories11 = await page.$$eval("tr.athing.submission", (rows) => rows.length);
+    assert(totalStories11 === 30, `no gap injection when dwell not met (got ${totalStories11})`);
+
+    // --- Test 11: No duplicate markers on page 1 ---
+    console.log("\nTest 11: No duplicate markers on page 1");
+    await clearStorageSession(context);
+    await setStorageSession(context, { pagegap_dwell: 0 });
+    await page.goto("https://news.ycombinator.com/news?p=1", { waitUntil: "load" });
+    await page.waitForTimeout(2000);
+
+    const dupCountPage1 = await page.$$eval(
+      "tr.pagegap-duplicate",
+      (rows) => rows.length
+    );
+    assert(dupCountPage1 === 0, "no duplicate markers on page 1");
+
   } finally {
     await context.close();
   }

@@ -61,3 +61,13 @@ Follow-up to plan `zippy-petting-lobster.md`: Made the dwell time configurable v
 Updated deviations doc (`docs/plans/zippy-petting-lobster_deviations.md`) with three deviations from the original plan: configurable dwell threshold, no backdated timestamps in tests, and `pagegap_dwell` restoration after `clearStorageSession`. Updated `HOW_IT_WORKS.md` with dwell time check in lifecycle and `pagegap_dwell` in storage schema. Updated `README.md` test count to 8 tests/13 assertions.
 
 Retroactively added plan filename references to prompt history entries (both v1 plan and dwell time plan were missing them). Added instruction to CLAUDE.md Prompt History section and UserPromptSubmit hook to reference plan filenames when work is part of an approved plan.
+
+Committed dwell time implementation (content.js, tests, plan docs, HOW_IT_WORKS, README, prompt history). Then committed CLAUDE.md and hook instruction updates for plan references separately.
+
+Brainstormed approaches for the next FUTURE_WORK item: duplicate detection (stories that fall from page N-1 to page N, seen twice). Discussed four options: hide entirely, dim/mark, collapse with expand, hide+backfill. Decided on Option B (dim/mark) for visual annotation.
+
+Planned and approved duplicate detection and visual annotation system (`docs/plans/smooth-kindling-otter.md`). Created `pagegap.css` with two CSS classes: `.pagegap-gap` (teal left border for injected gap stories) and `.pagegap-duplicate` (reduced opacity for already-seen stories). Updated `manifest.json` to register the CSS file. Modified `content.js` to detect duplicates by comparing current page story IDs against previous page snapshot, and to add CSS classes to both duplicate and gap stories. Added 4 new tests (tests 9-12, 6 new assertions) covering duplicate detection, gap markers, duplicates without dwell, and no false duplicates on page 1. Updated `test/demo.js` to demonstrate both treatments. Updated HOW_IT_WORKS.md, FUTURE_WORK.md, and README.md.
+
+Increased duplicate dimming (opacity 0.55 to 0.4) and prepended "seen on previous page — " to duplicate story titles in `content.js`.
+
+Removed gap story teal border — gap stories no longer get special CSS styling. Removed `.pagegap-gap` CSS rule and class assignments from `content.js`. Dropped Test 10 (gap marker test), renumbered tests 11-12 to 10-11. Updated demo.js, HOW_IT_WORKS.md, and README.md test count (11 tests, 17 assertions). Updated deviations doc with deviations 3-4.

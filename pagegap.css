@@ -1,0 +1,6 @@
+/* PageGap visual annotations */
+
+/* Duplicate stories: already seen on previous page */
+tr.pagegap-duplicate {
+  opacity: 0.4;
+}
