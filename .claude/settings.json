@@ -1,3 +1,16 @@
 {
-  "enabledPlugins": {}
+  "enabledPlugins": {},
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"UserPromptSubmit\",\"additionalContext\":\"REMINDER: If this turn results in any meaningful state change (file edits, new files, commits, branch ops, etc.) — whether from a typed prompt, plan approval, or other directive — update docs/PROMPT_HISTORY.md (clean, readable) and docs/PROMPT_HISTORY_ORIG.md (original wording with inline context clarifications). Redact personal and security-sensitive details.\"}}'",
+            "statusMessage": "Checking prompt history..."
+          }
+        ]
+      }
+    ]
+  }
 }

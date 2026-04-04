@@ -28,3 +28,13 @@ TBD — project is in initial setup.
 - Enable developer mode for testing
 - `node test/open.js` — launch browser with extension for manual testing
 - `node test/test.js` — automated verification of extension loading
+
+## Prompt History
+
+Maintain two files tracking any user directive that results in meaningful state changes (file edits, new files, commits, branch operations, etc.). This includes typed prompts, plan approvals, tool confirmations, and any other trigger that causes work to happen — not just direct text prompts.
+
+- `docs/PROMPT_HISTORY.md` — cleaned up: fix grammar, typos, and readability. Keep it natural and concise, not overly polished.
+- `docs/PROMPT_HISTORY_ORIG.md` — directives with minimal inline context clarifications (in parentheses) to fill in missing references. Preserve original wording where applicable. (Gitignored, not committed.)
+
+Do not include discussion, questions, or directives that did not lead to state changes.
+Redact or omit personal information (names, emails, paths containing usernames, API keys, etc.) and security-sensitive details.
