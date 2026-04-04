@@ -72,6 +72,9 @@ async function runTests() {
   const context = await launchBrowser();
 
   try {
+    // Disable dwell time check for tests (default 60s would block rapid navigation)
+    await setStorageSession(context, { pagegap_dwell: 0 });
+
     // --- Test 1: Snapshot storage on page 1 ---
     console.log("\nTest 1: Snapshot storage on page 1");
     const page = context.pages()[0] || (await context.newPage());
@@ -153,6 +156,7 @@ async function runTests() {
     // --- Test 6: Skip non-news pages ---
     console.log("\nTest 6: Skip non-news pages");
     await clearStorageSession(context);
+    await setStorageSession(context, { pagegap_dwell: 0 });
     await page.goto("https://news.ycombinator.com/newest", { waitUntil: "load" });
     await page.waitForTimeout(2000);
     const storageNewest = await getStorageSession(context);
@@ -162,6 +166,7 @@ async function runTests() {
     // --- Test 7: Graceful handling of missing snapshot ---
     console.log("\nTest 7: Graceful handling of missing snapshot");
     await clearStorageSession(context);
+    await setStorageSession(context, { pagegap_dwell: 0 });
     await page.goto("https://news.ycombinator.com/news?p=2", { waitUntil: "load" });
     await page.waitForTimeout(2000);
 
@@ -172,6 +177,33 @@ async function runTests() {
     const errors = [];
     page.on("pageerror", (err) => errors.push(err.message));
     assert(errors.length === 0, "no console errors");
+
+    // --- Test 8: Skip re-fetch when previous page was viewed recently ---
+    console.log("\nTest 8: Skip re-fetch when previous page viewed less than 60s ago");
+    // Visit page 1 to get a fresh snapshot
+    await page.goto("https://news.ycombinator.com/news?p=1", { waitUntil: "load" });
+    await page.waitForTimeout(2000);
+
+    const storageForTest8 = await getStorageSession(context);
+    const idsForTest8 = storageForTest8.page_1.storyIds;
+
+    // Simulate a gap by trimming IDs, but keep a recent timestamp
+    // Set dwell to 60s so the recent timestamp triggers the skip
+    const trimmedIdsTest8 = idsForTest8.slice(3);
+    await setStorageSession(context, {
+      page_1: { storyIds: trimmedIdsTest8, timestamp: Date.now() },
+      pagegap_dwell: 60_000,
+    });
+
+    // Navigate to page 2 — should skip re-fetch due to recent timestamp
+    await page.goto("https://news.ycombinator.com/news?p=2", { waitUntil: "load" });
+    await page.waitForTimeout(3000);
+
+    const storyCountRecent = await page.$$eval("tr.athing.submission", (rows) => rows.length);
+    assert(
+      storyCountRecent === 30,
+      `page 2 has exactly 30 stories when previous page viewed recently (got ${storyCountRecent})`
+    );
 
   } finally {
     await context.close();

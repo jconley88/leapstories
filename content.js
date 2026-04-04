@@ -37,6 +37,12 @@
   const prevSnapshot = stored[prevKey];
   if (!prevSnapshot) return;
 
+  // Skip re-fetch if previous page was viewed too recently (default 60s, configurable via session storage)
+  const dwellConfig = await chrome.storage.session.get("pagegap_dwell");
+  const dwellMs = dwellConfig.pagegap_dwell ?? 60_000;
+  const elapsed = Date.now() - prevSnapshot.timestamp;
+  if (elapsed < dwellMs) return;
+
   const prevSnapshotIds = new Set(prevSnapshot.storyIds);
 
   // Fetch fresh copy of previous page

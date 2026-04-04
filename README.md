@@ -25,7 +25,7 @@ PageGap records which stories you saw on each page. When you navigate to the nex
 ## Testing
 
 ```bash
-# Automated test suite (7 tests, 12 assertions)
+# Automated test suite (8 tests, 13 assertions)
 node test/test.js
 
 # Visual demo — simulates gap stories and leaves browser open for inspection

@@ -38,7 +38,7 @@ Generate a reference document detailing research on the HN DOM structure, select
 
 Copy the current implementation plan to `docs/plans/v1_gap_detection_plan.md`.
 
-Approved the v1 implementation plan. Implemented: added `storage` permission to manifest.json, created `background.js` service worker (sets session storage access level for content scripts), wrote full `content.js` (parse stories from DOM, store snapshot, fetch+diff previous page, inject gap stories), expanded `test/test.js` to 7 test cases with 12 assertions (all passing), and created `test/demo.js` for visual inspection of injected stories.
+Approved and implemented the v1 gap detection plan (`docs/plans/v1_gap_detection_plan.md`). Added `storage` permission to manifest.json, created `background.js` service worker (sets session storage access level for content scripts), wrote full `content.js` (parse stories from DOM, store snapshot, fetch+diff previous page, inject gap stories), expanded `test/test.js` to 7 test cases with 12 assertions (all passing), and created `test/demo.js` for visual inspection of injected stories.
 
 Broadened the prompt history system to track any user directive that causes meaningful state changes (file edits, commits, branch ops, etc.), not just typed prompts. Updated CLAUDE.md instructions and the UserPromptSubmit hook message.
 
@@ -51,3 +51,13 @@ Add a PostToolUse hook on ExitPlanMode that reminds Claude to copy the plan file
 Create `docs/FUTURE_WORK.md` with items deferred from v1: duplicate detection (stories that dropped down), multi-page tracking, and support for other listing pages.
 
 Create `docs/HOW_IT_WORKS.md` documenting the extension's architecture, lifecycle, storage schema, DOM interaction, and limitations. Update `README.md` with the problem description, how it works, testing commands, and current scope.
+
+Planned and approved a 60-second minimum dwell time before re-fetching the previous page (`docs/plans/zippy-petting-lobster.md`).
+
+Implementing plan `zippy-petting-lobster.md`: Added dwell time check to `content.js` — if the previous page was viewed less than 60 seconds ago, skip the re-fetch. Added Test 8 to verify the dwell time check blocks re-fetches for recent pages.
+
+Follow-up to plan `zippy-petting-lobster.md`: Made the dwell time configurable via `pagegap_dwell` in session storage (defaults to 60,000ms). Tests set it to 0 to bypass the check, and Test 8 explicitly sets it to 60,000 to verify blocking. Allows adjusting the threshold during manual testing from the DevTools console.
+
+Updated deviations doc (`docs/plans/zippy-petting-lobster_deviations.md`) with three deviations from the original plan: configurable dwell threshold, no backdated timestamps in tests, and `pagegap_dwell` restoration after `clearStorageSession`. Updated `HOW_IT_WORKS.md` with dwell time check in lifecycle and `pagegap_dwell` in storage schema. Updated `README.md` test count to 8 tests/13 assertions.
+
+Retroactively added plan filename references to prompt history entries (both v1 plan and dwell time plan were missing them). Added instruction to CLAUDE.md Prompt History section and UserPromptSubmit hook to reference plan filenames when work is part of an approved plan.

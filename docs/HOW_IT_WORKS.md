@@ -19,11 +19,12 @@ PageGap is a Manifest V3 Chrome extension with two files that run on `news.ycomb
 
 4. Look up the stored snapshot for page N-1
 5. If no snapshot exists (user didn't visit page N-1 this session), stop
-6. Fetch page N-1's HTML from the server (`fetch()` + `DOMParser`)
-7. Parse stories from the fresh fetch
-8. Diff: find stories in the fresh fetch that are **not** in the stored snapshot
-9. These are "gap stories" — they rose into page N-1 after the user left it
-10. Inject gap stories at the top of the current page's DOM, before the first existing story
+6. Check dwell time: if fewer than `pagegap_dwell` milliseconds (default 60s) have passed since the snapshot was taken, stop — not enough time for meaningful story movement
+7. Fetch page N-1's HTML from the server (`fetch()` + `DOMParser`)
+8. Parse stories from the fresh fetch
+9. Diff: find stories in the fresh fetch that are **not** in the stored snapshot
+10. These are "gap stories" — they rose into page N-1 after the user left it
+11. Inject gap stories at the top of the current page's DOM, before the first existing story
 
 ### On page 1
 
@@ -45,6 +46,9 @@ Value: {
   storyIds: string[],   // array of 30 HN story IDs
   timestamp: number      // Date.now() when snapshot was taken
 }
+
+Key:   "pagegap_dwell"
+Value: number             // minimum ms on previous page before re-fetch (default 60000)
 ```
 
 ### Behavior
