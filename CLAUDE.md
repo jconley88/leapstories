@@ -38,6 +38,7 @@ Maintain two files tracking any user directive that results in meaningful state 
 
 Do not include discussion, questions, or directives that did not lead to state changes.
 Redact or omit personal information (names, emails, paths containing usernames, API keys, etc.) and security-sensitive details.
+When work is part of an approved plan, reference the plan filename (e.g., `docs/plans/zippy-petting-lobster.md`) in the prompt history entry. Indicate when a plan is approved/started and when subsequent entries are follow-ups to that plan.
 
 ## Plan Documentation
 
