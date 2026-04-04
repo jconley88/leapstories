@@ -1,3 +1,5 @@
+## Initial Setup
+
 Initialize Claude Code project configuration.
 
 This will be a browser extension for news.ycombinator.com that keeps track of stories you've already seen. It captures the "space between" pages. When clicking from page 1 to page 2, it does a normal load of page 2 but also reloads page 1, compares it to what you originally saw, and extracts any new stories that rose up from page 2 (or later) during the time you were reading page 1. These stories would otherwise be skipped entirely.
@@ -18,6 +20,8 @@ Update CLAUDE.md with instructions to keep the prompt history files up to date.
 
 Create a .gitignore with node_modules/ and other reasonable ignores for a browser extension.
 
+## Prompt History Tracking
+
 Set up an automated process to remind Claude to update the history files after each response. Implemented as a Stop hook in .claude/settings.json.
 
 Restructure prompt history files: the raw file now includes inline context clarifications, and a new edited file has grammar and typo fixes for readability. Rename ANNOTATED accordingly and update CLAUDE.md.
@@ -25,6 +29,8 @@ Restructure prompt history files: the raw file now includes inline context clari
 Renamed PROMPT_HISTORY to PROMPT_HISTORY_ORIG and PROMPT_HISTORY_EDITED to PROMPT_HISTORY. Added PROMPT_HISTORY_ORIG to .gitignore. Updated all references.
 
 Split into two commits: initial project setup, then prompt history tracking separately.
+
+## v1 Implementation
 
 Update prompt history instructions to redact personal information and security-sensitive details. Update the Stop hook with the same redaction instructions.
 
@@ -46,11 +52,15 @@ Document implementation deviations from the original plan in `docs/plans/v1_gap_
 
 Move implementation plan and deviations files into `docs/plans/` and rename to include "v1_gap_detection" prefix.
 
+## Plan Automation
+
 Add a PostToolUse hook on ExitPlanMode that reminds Claude to copy the plan file to `docs/plans/` and to create a deviations doc upon implementation completion. Added corresponding instructions to CLAUDE.md.
 
 Create `docs/FUTURE_WORK.md` with items deferred from v1: duplicate detection (stories that dropped down), multi-page tracking, and support for other listing pages.
 
 Create `docs/HOW_IT_WORKS.md` documenting the extension's architecture, lifecycle, storage schema, DOM interaction, and limitations. Update `README.md` with the problem description, how it works, testing commands, and current scope.
+
+## Dwell Time
 
 Planned and approved a 60-second minimum dwell time before re-fetching the previous page (`docs/plans/zippy-petting-lobster.md`).
 
@@ -60,9 +70,13 @@ Follow-up to plan `zippy-petting-lobster.md`: Made the dwell time configurable v
 
 Updated deviations doc (`docs/plans/zippy-petting-lobster_deviations.md`) with three deviations from the original plan: configurable dwell threshold, no backdated timestamps in tests, and `pagegap_dwell` restoration after `clearStorageSession`. Updated `HOW_IT_WORKS.md` with dwell time check in lifecycle and `pagegap_dwell` in storage schema. Updated `README.md` test count to 8 tests/13 assertions.
 
+## Plan References
+
 Retroactively added plan filename references to prompt history entries (both v1 plan and dwell time plan were missing them). Added instruction to CLAUDE.md Prompt History section and UserPromptSubmit hook to reference plan filenames when work is part of an approved plan.
 
 Committed dwell time implementation (content.js, tests, plan docs, HOW_IT_WORKS, README, prompt history). Then committed CLAUDE.md and hook instruction updates for plan references separately.
+
+## Duplicate Detection
 
 Brainstormed approaches for the next FUTURE_WORK item: duplicate detection (stories that fall from page N-1 to page N, seen twice). Discussed four options: hide entirely, dim/mark, collapse with expand, hide+backfill. Decided on Option B (dim/mark) for visual annotation.
 
@@ -71,6 +85,8 @@ Planned and approved duplicate detection and visual annotation system (`docs/pla
 Increased duplicate dimming (opacity 0.55 to 0.4) and prepended "seen on previous page — " to duplicate story titles in `content.js`.
 
 Removed gap story teal border — gap stories no longer get special CSS styling. Removed `.pagegap-gap` CSS rule and class assignments from `content.js`. Dropped Test 10 (gap marker test), renumbered tests 11-12 to 10-11. Updated demo.js, HOW_IT_WORKS.md, and README.md test count (11 tests, 17 assertions). Updated deviations doc with deviations 3-4.
+
+## Test Fixtures
 
 Planned and approved replacing live HN requests in tests with local fixtures (`docs/plans/agile-greeting-rain.md`). Tests should not connect to live news pages. Decided on hybrid approach: Playwright `context.route()` interception serving synthetic HTML fixtures for the main test suite (deterministic IDs, known assertions), plus a smoke test using captured real HN page fixtures to validate selectors against actual markup.
 
@@ -84,9 +100,13 @@ Extracted real fixture data to `test/fixtures/index.js` — exports `page1HTML`,
 
 Added per-test timing output to test runner. Diagnosed test 5 taking 30 seconds — `page.waitForFunction()` had swapped argument order (`options` and `arg` reversed). Playwright's signature is `(fn, arg, options)` but we passed `(fn, {timeout: 5000}, STORIES_PER_PAGE)`. The timeout was ignored (defaulting to 30s) and the page function's argument was a truthy object instead of the story count. Fixed argument order. Test 5 now completes in ~33ms.
 
+## Demo Fixes
+
 Fixed `test/demo.js` not showing gap stories. The modified page 1 snapshot was using `Date.now()` as the timestamp, so the dwell time check in `content.js` saw it as "just viewed" and skipped the gap detection fetch. Changed to `Date.now() - 120_000` to exceed the 60-second dwell threshold.
 
 Reduced `test/demo.js` wait times from 2000/2000/3000ms to 1000/1000/1500ms to speed up the demo flow.
+
+## Race Condition Fix
 
 Identified and fixed a race condition where a gap story could appear twice — once injected at the top and once natively in the current page list. Planned and implemented in `docs/plans/quiet-booping-diffie.md`. Added `currentStoryIds` set to `content.js` and updated the `gapStories` filter to exclude stories already present on the current page.
 
@@ -95,3 +115,17 @@ Ran tests (all 24 passed) and added Test 13 to cover the race condition fix: a s
 Updated deviations doc, HOW_IT_WORKS.md, and README.md to reflect the race condition fix and new Test 13. Deviations doc notes the addition of Test 13 and `page2IdsOverride` as the only deviation from the plan. README test count updated to 13 tests / 26 assertions. HOW_IT_WORKS updated lifecycle step 9 and testing section.
 
 Committed race condition fix, test, plan docs, and supporting doc updates.
+
+## Prompt History Sections
+
+Added commit-based section headers to PROMPT_HISTORY.md (`docs/plans/sparkling-prancing-russell.md`).
+
+Added a PreToolUse hook on Bash that appends a `---` divider to PROMPT_HISTORY.md and stages it whenever a `git commit` is about to run, so each commit automatically seals the history entries that preceded it.
+
+Updated the UserPromptSubmit hook and CLAUDE.md to instruct: when making a commit, if PROMPT_HISTORY.md ends with a `---` divider, replace it with a `## [commit subject]` header, then append a new `---` at the end.
+
+Fixed two grammar nits in CLAUDE.md prompt history instructions: "may have not been" → "may not have been" and "If it does" → "If so".
+
+Removed PreToolUse auto-seal hook. Moved `---` divider and `## header` management back to manual instructions in CLAUDE.md and the UserPromptSubmit hook.
+
+---

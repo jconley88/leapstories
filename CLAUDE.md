@@ -40,6 +40,11 @@ Do not include discussion, questions, or directives that did not lead to state c
 Redact or omit personal information (names, emails, paths containing usernames, API keys, etc.) and security-sensitive details.
 When work is part of an approved plan, reference the plan filename (e.g., `docs/plans/zippy-petting-lobster.md`) in the prompt history entry. Indicate when a plan is approved/started and when subsequent entries are follow-ups to that plan.
 
+Before making a commit, update `docs/PROMPT_HISTORY.md` as part of the commit:
+1. Replace the current `---` divider with a `## [commit subject]` header (short, plain title derived from the commit message). If the header was set earlier in the session, verify it's still accurate given all the work done.
+2. Append a new `---` divider at the end to seal this commit's entries.
+3. Stage `docs/PROMPT_HISTORY.md` along with the other changes.
+
 ## Plan Documentation
 
 When a plan is approved (via ExitPlanMode), copy the plan file to `docs/plans/` using the default plan filename.
