@@ -71,3 +71,15 @@ Planned and approved duplicate detection and visual annotation system (`docs/pla
 Increased duplicate dimming (opacity 0.55 to 0.4) and prepended "seen on previous page — " to duplicate story titles in `content.js`.
 
 Removed gap story teal border — gap stories no longer get special CSS styling. Removed `.pagegap-gap` CSS rule and class assignments from `content.js`. Dropped Test 10 (gap marker test), renumbered tests 11-12 to 10-11. Updated demo.js, HOW_IT_WORKS.md, and README.md test count (11 tests, 17 assertions). Updated deviations doc with deviations 3-4.
+
+Planned and approved replacing live HN requests in tests with local fixtures (`docs/plans/agile-greeting-rain.md`). Tests should not connect to live news pages. Decided on hybrid approach: Playwright `context.route()` interception serving synthetic HTML fixtures for the main test suite (deterministic IDs, known assertions), plus a smoke test using captured real HN page fixtures to validate selectors against actual markup.
+
+Implementing plan `agile-greeting-rain.md`: Rewrote `test/test.js` — added `buildHNPage()` helper generating minimal HN-structured HTML, defined deterministic story IDs (`PAGE1_IDS`, `PAGE2_IDS`), set up `context.route()` to intercept all HN requests. Simplified tests 5, 8, 9, 10 to use known IDs directly instead of discovering them via navigation. Replaced `waitForTimeout(2000-3000)` with `waitForSelector` + brief 500ms waits. Strengthened assertions to check exact IDs. Added Test 12 (smoke test) serving captured real HN pages from `test/fixtures/`. Created `test/fixtures/page1.html` and `test/fixtures/page2.html`. All 12 tests (24 assertions) pass with zero live network requests.
+
+Formatted the captured HTML fixture files (`test/fixtures/page1.html`, `page2.html`) with Prettier for readability via `npx prettier --write`.
+
+Reduced synthetic fixtures from 30 to 5 stories per page. Added `STORIES_PER_PAGE` constant used across all synthetic test assertions and fixture generation. Fake page 1 filler arrays now computed from the constant. Real fixture smoke test (test 12) unchanged at 30 stories. All 24 assertions pass.
+
+Extracted real fixture data to `test/fixtures/index.js` — exports `page1HTML`, `page2HTML`, `page1IDs`, and `page2IDs`. Removed `fs` import and inline ID arrays from `test/test.js`, replaced with `require("./fixtures")`.
+
+Added per-test timing output to test runner. Diagnosed test 5 taking 30 seconds — `page.waitForFunction()` had swapped argument order (`options` and `arg` reversed). Playwright's signature is `(fn, arg, options)` but we passed `(fn, {timeout: 5000}, STORIES_PER_PAGE)`. The timeout was ignored (defaulting to 30s) and the page function's argument was a truthy object instead of the story count. Fixed argument order. Test 5 now completes in ~33ms.

@@ -25,7 +25,7 @@ PageGap records which stories you saw on each page. When you navigate to the nex
 ## Testing
 
 ```bash
-# Automated test suite (11 tests, 17 assertions)
+# Automated test suite (12 tests, 24 assertions) — uses local fixtures, no live network
 node test/test.js
 
 # Visual demo — simulates gap stories and leaves browser open for inspection
@@ -35,7 +35,7 @@ node test/demo.js
 node test/open.js
 ```
 
-Requires [Playwright](https://playwright.dev/) (`npm install`).
+Requires [Playwright](https://playwright.dev/) (`npm install`). Tests use Playwright route interception to serve synthetic and captured HTML fixtures — no connection to live HN.
 
 ## Scope
 
