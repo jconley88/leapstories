@@ -23,7 +23,7 @@ LeapStories is a Manifest V3 Chrome extension with source files in `src/`:
 
 4. Look up the stored snapshot for page N-1
 5. If no snapshot exists (user didn't visit page N-1 this session), stop
-6. Check dwell time: if fewer than `leapstories_dwell` milliseconds (default 60s) have passed since the snapshot was taken, stop — not enough time for meaningful story movement
+6. Check dwell time: if fewer than `dwellSeconds` (default 60s, configurable in options) have passed since the snapshot was taken, stop — not enough time for meaningful story movement
 7. Fetch page N-1's HTML from the server (`fetch()` + `DOMParser`)
 8. Parse stories from the fresh fetch
 9. Diff: find stories in the fresh fetch that are **not** in the stored snapshot **and not already present on the current page**
@@ -53,9 +53,6 @@ Value: {
   storyIds: string[],   // array of 30 HN story IDs
   timestamp: number      // Date.now() when snapshot was taken
 }
-
-Key:   "leapstories_dwell"
-Value: number             // minimum ms on previous page before re-fetch (default 60000)
 ```
 
 **`chrome.storage.local`** (user settings):
@@ -64,7 +61,8 @@ Value: number             // minimum ms on previous page before re-fetch (defaul
 Key:   "leapstories_settings"
 Value: {
   duplicatePrefix:  string,  // text prepended to duplicate titles (default: "seen on previous page — ")
-  duplicateOpacity: number   // opacity for duplicate rows (default: 0.4)
+  duplicateOpacity: number,  // opacity for duplicate rows (default: 0.4)
+  dwellSeconds:     number   // minimum seconds on previous page before gap detection (default: 60)
 }
 ```
 

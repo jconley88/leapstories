@@ -192,3 +192,8 @@ Updated `README.md` with an Options section (table of settings, class hook note)
 
 Removed `src/leapstories.css` (now empty of rules — opacity moved to inline style) and dropped its entry from `manifest.json`.
 
+## Move dwell config to user settings
+
+Moved dwell time from `chrome.storage.session` (`leapstories_dwell` key, reset on browser close) to the persistent `chrome.storage.local` settings. Added `dwellSeconds` to `SETTINGS_DEFAULTS` in `settings.js` (default 60). Removed `getDwellConfig()` from `storage.js`. Updated `isDwellMet` in `content.js` to read from settings (now synchronous, takes settings param). Added dwell time field to options page. Updated `README.md` options table and `HOW_IT_WORKS.md` storage schema and lifecycle description.
+
+---

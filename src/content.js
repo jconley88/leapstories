@@ -18,10 +18,9 @@ async function handleDuplicates(storyIds, prevSnapshot, settings) {
   markDuplicates(findDuplicateIds(storyIds, prevSnapshot.storyIds), settings);
 }
 
-async function isDwellMet(prevSnapshot) {
-  const dwellMs = await getDwellConfig();
+function isDwellMet(prevSnapshot, settings) {
   const elapsed = Date.now() - prevSnapshot.timestamp;
-  return elapsed >= dwellMs;
+  return elapsed >= settings.dwellSeconds * 1000;
 }
 
 async function handleGaps(pageNum, storyIds, prevSnapshot) {
@@ -47,6 +46,6 @@ async function handleGaps(pageNum, storyIds, prevSnapshot) {
   if (!prevSnapshot) { return }
   const settings = await getSettings();
   await handleDuplicates(storyIds, prevSnapshot, settings);
-  if (!await isDwellMet(prevSnapshot)) { return }
+  if (!isDwellMet(prevSnapshot, settings)) { return }
   await handleGaps(pageNum, storyIds, prevSnapshot);
 })();

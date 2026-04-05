@@ -10,7 +10,3 @@ async function getSnapshot(pageNum) {
   return stored[key] || null;
 }
 
-async function getDwellConfig() {
-  const dwellConfig = await chrome.storage.session.get("leapstories_dwell");
-  return dwellConfig.leapstories_dwell ?? 60_000;
-}

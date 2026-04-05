@@ -45,6 +45,7 @@ Right-click the extension icon → **Options** (or go to `chrome://extensions` �
 |---|---|---|
 | Duplicate story prefix | `seen on previous page — ` | Text prepended to titles of stories already seen on the previous page |
 | Duplicate story opacity | `0.4` | Opacity applied to dimmed duplicate story rows (0–1) |
+| Dwell time (seconds) | `60` | Minimum seconds on a page before gap detection activates on the next page |
 
 Duplicate rows also get the `.leapstories-duplicate` CSS class, so you can target them with your own HN user stylesheet.
 
