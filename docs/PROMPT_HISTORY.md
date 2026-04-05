@@ -196,4 +196,10 @@ Removed `src/leapstories.css` (now empty of rules — opacity moved to inline st
 
 Moved dwell time from `chrome.storage.session` (`leapstories_dwell` key, reset on browser close) to the persistent `chrome.storage.local` settings. Added `dwellSeconds` to `SETTINGS_DEFAULTS` in `settings.js` (default 60). Removed `getDwellConfig()` from `storage.js`. Updated `isDwellMet` in `content.js` to read from settings (now synchronous, takes settings param). Added dwell time field to options page. Updated `README.md` options table and `HOW_IT_WORKS.md` storage schema and lifecycle description.
 
+## Add extension icon and toolbar popup
+
+Created an SVG icon (orange side-view frog with page lines across its body) and generated 16x16, 48x48, and 128x128 PNGs. Added `icons` and `action` fields to `manifest.json`.
+
+Created `src/popup.html` (compact settings popup reusing `options.js` and `settings.js`) and `src/popup_disabled.html` (inactive message for non-HN pages). Content script sends a message to the background script on HN pages to swap the popup from disabled to settings. No additional permissions required.
+
 ---
