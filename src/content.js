@@ -35,7 +35,7 @@ async function handleGaps(pageNum, storyIds, prevSnapshot) {
   await saveSnapshot(pageNum, storyIds);
 }
 
-(async function pagegap() {
+(async function leapstories() {
   const path = window.location.pathname;
   if (path !== "/" && path !== "/news") return;
 

@@ -174,4 +174,12 @@ Restructured `test/test.js`: each test is now a standalone function with its own
 
 Updated deviations doc with 8 deviations from the original plan (capability-based modules, abstraction levels, ID-based functions, Set removal, constants, dwell extraction, test restructuring, fetchPage generalization). Updated `HOW_IT_WORKS.md` file listing and test description. Updated `README.md` test count. All 14 tests (30 assertions) pass.
 
+## Rename project from PageGap to LeapStories
+
+Brainstormed names based on the extension's mechanics (HN-specific, dynamic pagination, stories that leap between pages). Settled on LeapStories — stories that leap between pages, with a loose analogy to leap year filling a gap the normal system misses.
+
+Renamed all internal references: extension name in manifest, CSS file (`pagegap.css` → `leapstories.css`), CSS class (`pagegap-duplicate` → `leapstories-duplicate`), storage key (`pagegap_dwell` → `leapstories_dwell`), IIFE function name, npm package name, and all active docs. Directory left as `/pagegap` to preserve Claude session memory. Historical docs (prompt history, plan files, session logs) left unchanged.
+
+Plan: `docs/plans/steady-tickling-moonbeam.md`
+
 ---

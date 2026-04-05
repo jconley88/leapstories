@@ -1,5 +1,5 @@
 {
-  "name": "pagegap",
+  "name": "leapstories",
   "version": "1.0.0",
   "description": "Browser extension that catches Hacker News stories missed between page navigations.",
   "main": "content.js",

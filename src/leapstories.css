@@ -1,6 +1,6 @@
-/* PageGap visual annotations */
+/* LeapStories visual annotations */
 
 /* Duplicate stories: already seen on previous page */
-tr.pagegap-duplicate {
+tr.leapstories-duplicate {
   opacity: 0.4;
 }

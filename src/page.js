@@ -1,6 +1,6 @@
 const STORY_ROW_SELECTOR = "tr.athing.submission";
 const TITLE_LINK_SELECTOR = ".titleline > a";
-const DUPLICATE_CLASS = "pagegap-duplicate";
+const DUPLICATE_CLASS = "leapstories-duplicate";
 const DUPLICATE_PREFIX = "seen on previous page \u2014 ";
 
 function getPageNumber() {

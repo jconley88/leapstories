@@ -1,10 +1,10 @@
-# PageGap
+# LeapStories
 
 Browser extension for news.ycombinator.com that detects stories missed during pagination.
 
 ## What it does
 
-When browsing HN, stories constantly shift position as they gain/lose rank. When you finish reading page 1 and click to page 2, some stories that were on page 2 may have risen to page 1 in the interim — meaning you never see them. PageGap catches these "gap" stories by:
+When browsing HN, stories constantly shift position as they gain/lose rank. When you finish reading page 1 and click to page 2, some stories that were on page 2 may have risen to page 1 in the interim — meaning you never see them. LeapStories catches these "gap" stories by:
 
 1. Recording which stories were visible when you viewed a page
 2. When navigating to the next page, silently re-fetching the previous page

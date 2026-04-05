@@ -1,8 +1,8 @@
-# How PageGap Works
+# How LeapStories Works
 
 ## Overview
 
-PageGap is a Manifest V3 Chrome extension with source files in `src/`:
+LeapStories is a Manifest V3 Chrome extension with source files in `src/`:
 
 - **`background.js`** — Service worker that sets `chrome.storage.session` access level so content scripts can use it
 - **`page.js`** — DOM interaction: constants (selectors, CSS classes), page parsing, fetching, duplicate marking, gap story injection
@@ -21,7 +21,7 @@ PageGap is a Manifest V3 Chrome extension with source files in `src/`:
 
 4. Look up the stored snapshot for page N-1
 5. If no snapshot exists (user didn't visit page N-1 this session), stop
-6. Check dwell time: if fewer than `pagegap_dwell` milliseconds (default 60s) have passed since the snapshot was taken, stop — not enough time for meaningful story movement
+6. Check dwell time: if fewer than `leapstories_dwell` milliseconds (default 60s) have passed since the snapshot was taken, stop — not enough time for meaningful story movement
 7. Fetch page N-1's HTML from the server (`fetch()` + `DOMParser`)
 8. Parse stories from the fresh fetch
 9. Diff: find stories in the fresh fetch that are **not** in the stored snapshot **and not already present on the current page**
@@ -50,7 +50,7 @@ Value: {
   timestamp: number      // Date.now() when snapshot was taken
 }
 
-Key:   "pagegap_dwell"
+Key:   "leapstories_dwell"
 Value: number             // minimum ms on previous page before re-fetch (default 60000)
 ```
 
@@ -85,7 +85,7 @@ Gap stories are injected using `document.importNode()` to adopt nodes from the f
 
 On page 2+, stories that appear on the current page and were also in the previous page's snapshot are marked as duplicates. These are stories that fell in rank between navigations, causing the user to see them twice.
 
-Duplicates get the `.pagegap-duplicate` CSS class (loaded via `pagegap.css` registered in the manifest), which reduces opacity to `0.4`. Their titles are also prefixed with "seen on previous page — ".
+Duplicates get the `.leapstories-duplicate` CSS class (loaded via `leapstories.css` registered in the manifest), which reduces opacity to `0.4`. Their titles are also prefixed with "seen on previous page — ".
 
 Duplicate detection runs on every page 2+ load, even when the dwell time check skips gap detection.
 

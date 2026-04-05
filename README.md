@@ -1,4 +1,4 @@
-# PageGap
+# LeapStories
 
 Browser extension that catches Hacker News stories missed between page navigations.
 
@@ -8,7 +8,7 @@ When browsing HN, stories shift rank constantly. By the time you finish page 1 a
 
 ## How it works
 
-PageGap records which stories you saw on each page. When you navigate to the next page, it silently re-fetches the previous page, compares it against your original snapshot, and injects any stories that rose into the gap at the top of your current page. Stories that fell from the previous page and appear as duplicates are dimmed.
+LeapStories records which stories you saw on each page. When you navigate to the next page, it silently re-fetches the previous page, compares it against your original snapshot, and injects any stories that rose into the gap at the top of your current page. Stories that fell from the previous page and appear as duplicates are dimmed.
 
 ## Install
 

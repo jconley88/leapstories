@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "PageGap",
+  "name": "LeapStories",
   "version": "0.1.0",
   "description": "Catch Hacker News stories missed between page navigations",
   "permissions": ["storage"],
@@ -11,7 +11,7 @@
     {
       "matches": ["https://news.ycombinator.com/*"],
       "js": ["src/page.js", "src/storage.js", "src/content.js"],
-      "css": ["src/pagegap.css"]
+      "css": ["src/leapstories.css"]
     }
   ]
 }

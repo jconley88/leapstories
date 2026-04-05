@@ -55,7 +55,7 @@ const extensionPath = path.join(__dirname, "..");
   await page.waitForTimeout(1500);
 
   const total = await page.$$eval("tr.athing.submission", (rows) => rows.length);
-  const dups = await page.$$eval("tr.athing.submission.pagegap-duplicate", (rows) => rows.length);
+  const dups = await page.$$eval("tr.athing.submission.leapstories-duplicate", (rows) => rows.length);
   console.log(`Page 2: ${total} stories total, ${total - 30} gap (injected), ${dups} duplicate (dimmed).`);
   console.log(`Browser is open — inspect the page. Close the browser when done.`);
 

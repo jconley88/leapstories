@@ -151,11 +151,11 @@ async function storyIds(page) {
 }
 
 async function duplicateCount(page) {
-  return page.$$eval("tr.athing.submission.pagegap-duplicate", (rows) => rows.length);
+  return page.$$eval("tr.athing.submission.leapstories-duplicate", (rows) => rows.length);
 }
 
 async function duplicateIds(page) {
-  return page.$$eval("tr.athing.submission.pagegap-duplicate", (rows) => rows.map((r) => r.id));
+  return page.$$eval("tr.athing.submission.leapstories-duplicate", (rows) => rows.map((r) => r.id));
 }
 
 // --- Test functions ---
@@ -212,7 +212,7 @@ async function testNoInjectionWhenNoGap(context, page) {
 async function testGapDetectionAndInjection(context, page) {
   await setStorageSession(context, {
     page_1: { storyIds: PAGE1_IDS.slice(3), timestamp: Date.now() - 120_000 },
-    pagegap_dwell: 0,
+    leapstories_dwell: 0,
   });
 
   await goToPageAndWaitForInjection(page, 2);
@@ -258,7 +258,7 @@ async function testMissingSnapshot(context, page) {
 async function testDwellTimeSkip(context, page) {
   await setStorageSession(context, {
     page_1: { storyIds: PAGE1_IDS.slice(3), timestamp: Date.now() },
-    pagegap_dwell: 60_000,
+    leapstories_dwell: 60_000,
   });
 
   await goToPage(page, 2);
@@ -275,11 +275,11 @@ async function testDuplicateDetection(context, page) {
   const fakePage1Ids = [...Array(STORIES_PER_PAGE - overlapIds.length).fill("fake_id"), ...overlapIds];
   await setStorageSession(context, {
     page_1: { storyIds: fakePage1Ids, timestamp: Date.now() - 120_000 },
-    pagegap_dwell: 0,
+    leapstories_dwell: 0,
   });
 
   await page.goto("https://news.ycombinator.com/news?p=2", { waitUntil: "load" });
-  await page.waitForSelector(".pagegap-duplicate", { timeout: 5000 }).catch(() => {});
+  await page.waitForSelector(".leapstories-duplicate", { timeout: 5000 }).catch(() => {});
   await page.waitForTimeout(500);
 
   const dupCount = await duplicateCount(page);
@@ -295,11 +295,11 @@ async function testDuplicatesWithoutDwell(context, page) {
   const fakePage1Ids = [...Array(STORIES_PER_PAGE - overlapIds.length).fill("fake_id"), ...overlapIds];
   await setStorageSession(context, {
     page_1: { storyIds: fakePage1Ids, timestamp: Date.now() },
-    pagegap_dwell: 60_000,
+    leapstories_dwell: 60_000,
   });
 
   await page.goto("https://news.ycombinator.com/news?p=2", { waitUntil: "load" });
-  await page.waitForSelector(".pagegap-duplicate", { timeout: 5000 }).catch(() => {});
+  await page.waitForSelector(".leapstories-duplicate", { timeout: 5000 }).catch(() => {});
   await page.waitForTimeout(500);
 
   const dupCnt = await duplicateCount(page);
@@ -312,7 +312,7 @@ async function testDuplicatesWithoutDwell(context, page) {
 async function testNoDuplicatesOnPage1(context, page) {
   await goToPage(page, 1);
 
-  const dupCnt = await page.$$eval("tr.pagegap-duplicate", (rows) => rows.length);
+  const dupCnt = await page.$$eval("tr.leapstories-duplicate", (rows) => rows.length);
   assert(dupCnt === 0, "no duplicate markers on page 1");
 }
 
@@ -355,7 +355,7 @@ async function testGapStoryNotInjectedIfOnCurrentPage(context, page) {
 
   await setStorageSession(context, {
     page_1: { storyIds: snapshotIds, timestamp: Date.now() - 120_000 },
-    pagegap_dwell: 0,
+    leapstories_dwell: 0,
   });
 
   await goToPageAndWaitForInjection(page, 2);
@@ -377,7 +377,7 @@ async function testGapStoryNotInjectedIfOnCurrentPage(context, page) {
 async function testGapIdsAddedToSnapshot(context, page) {
   await setStorageSession(context, {
     page_1: { storyIds: PAGE1_IDS.slice(3), timestamp: Date.now() - 120_000 },
-    pagegap_dwell: 0,
+    leapstories_dwell: 0,
   });
 
   await goToPageAndWaitForInjection(page, 2);
@@ -429,7 +429,7 @@ async function runTests() {
       const start = Date.now();
       console.log(`\n${test.name}`);
       await clearStorageSession(context);
-      await setStorageSession(context, { pagegap_dwell: 0 });
+      await setStorageSession(context, { leapstories_dwell: 0 });
       await test.fn(context, page);
       console.log(`  (${Date.now() - start}ms)`);
     }

@@ -11,6 +11,6 @@ async function getSnapshot(pageNum) {
 }
 
 async function getDwellConfig() {
-  const dwellConfig = await chrome.storage.session.get("pagegap_dwell");
-  return dwellConfig.pagegap_dwell ?? 60_000;
+  const dwellConfig = await chrome.storage.session.get("leapstories_dwell");
+  return dwellConfig.leapstories_dwell ?? 60_000;
 }

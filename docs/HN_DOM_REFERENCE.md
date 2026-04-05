@@ -108,7 +108,7 @@ A simple empty row for visual spacing between stories.
 - The `morespace` row (`<tr class="morespace" style="height:10px">`) separates the last story from the "More" link
 - The bare URL `/` and `/news` both serve the same top stories listing
 
-## Key selectors for PageGap
+## Key selectors for LeapStories
 
 | Target | Selector |
 |--------|----------|
@@ -133,7 +133,7 @@ All three must be copied together when injecting a story into a different page.
 
 | URL | Content |
 |-----|---------|
-| `/` or `/news` | Top stories (what PageGap targets) |
+| `/` or `/news` | Top stories (what LeapStories targets) |
 | `/news?p=N` | Top stories, page N |
 | `/newest` | New stories (not targeted in v1) |
 | `/front` | Front page stories (not targeted in v1) |
