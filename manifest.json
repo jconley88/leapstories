@@ -5,13 +5,13 @@
   "description": "Catch Hacker News stories missed between page navigations",
   "permissions": ["storage"],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/background.js"
   },
   "content_scripts": [
     {
       "matches": ["https://news.ycombinator.com/*"],
-      "js": ["content.js"],
-      "css": ["pagegap.css"]
+      "js": ["src/page.js", "src/storage.js", "src/content.js"],
+      "css": ["src/pagegap.css"]
     }
   ]
 }

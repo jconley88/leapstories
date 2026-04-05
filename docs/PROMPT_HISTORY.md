@@ -134,4 +134,44 @@ Reviewed project and `docs/HOW_IT_WORKS.md`. Discussed whether gap stories shoul
 
 Planned and approved `docs/plans/squishy-chasing-kettle.md`. Implemented: after gap injection in `content.js`, gap story IDs are appended to `storyIds` and the page snapshot is re-written to session storage. Added Test 14 (4 assertions) verifying gap IDs appear in the updated snapshot. Updated `docs/HOW_IT_WORKS.md` with new step 12. All 30 assertions pass.
 
+## Refactor content.js into separate modules
+
+Discussed refactoring `content.js` to isolate responsibilities. Identified five concerns: parsing, storage, duplicate detection, gap detection, and orchestration.
+
+Planned and approved `docs/plans/mutable-crunching-frog.md`. Split `content.js` (106 lines) into five files: `parse.js` (pure DOM parsing), `storage.js` (chrome.storage.session wrapper), `duplicates.js` (detection and marking), `gaps.js` (fetch, detection, injection), and `content.js` (slim orchestrator, ~40 lines). Updated `manifest.json` to list all files in execution order. No build step needed — MV3 content scripts share scope when listed in the manifest array. All 14 tests (30 assertions) pass unchanged.
+
+Created `src/` directory and moved all extension source files (`background.js`, `content.js`, `parse.js`, `storage.js`, `duplicates.js`, `gaps.js`, `pagegap.css`) into it. Updated `manifest.json` paths with `src/` prefix. All 14 tests (30 assertions) pass.
+
+Replaced scattered mid-flow early returns in `content.js` orchestrator with forward-looking conditional blocks for gap detection. Fetch error uses `.catch(() => null)` instead of try/catch-return. Moved `pageNum > 1` and `prevSnapshot` checks from early returns to nested conditionals — page 1 is normal execution, not a precondition failure. Only the path guard (wrong page) remains as an early return.
+
+Split duplicate and gap logic into separate `handleDuplicates()` and `handleGaps()` functions in `content.js`, each with independent flows. The orchestrator calls both sequentially under `if (pageNum > 1)`. Each handler owns its own precondition checks.
+
+Extracted snapshot creation into `handleSnapshot()` function returning `{ pageNum, currentStories, storyIds }`. Moved `pageNum <= 1` back to an early return at the orchestrator level (user edit). Lifted `!prevSnapshot` guard from both `handleDuplicates` and `handleGaps` into the orchestrator as an early return. Renamed `handleSnapshot` to `handleSaveSnapshot` (user edit). Moved `getPageNumber()` call to the orchestrator, passing `pageNum` into `handleSaveSnapshot`. Refactored `duplicates.js` to work with IDs instead of story objects: renamed `findDuplicates` to `findDuplicateIds` (filters ID arrays), `markDuplicates` now takes duplicate IDs and looks up DOM rows via `document.getElementById`. `handleDuplicates` now receives `storyIds` instead of `currentStories`.
+
+Added `getStoriesFromDOM(storyIds)` to `parse.js` for looking up story rows by ID. Removed `currentStories` from the orchestrator — `handleGaps` now takes `storyIds` directly and builds its Set from the ID array. `handleSaveSnapshot` returns just the ID array.
+
+Moved `gapStories.length` and `firstStory` checks into `injectGapStories` in `gaps.js` — it now finds its own reference row and handles empty input. Snapshot update (`storyIds.push` + `saveSnapshot`) moved outside the conditional block in `handleGaps`.
+
+Restructured modules by capability instead of feature. Moved `fetchFreshPreviousPage` into `parse.js` (DOM reads + fetch). Moved `findDuplicateIds` and `findGapStories` into `content.js` (data logic + orchestration). Created `render.js` for DOM writes (`markDuplicates`, `injectGapStories`). Deleted `gaps.js` and `duplicates.js`. Updated `manifest.json`.
+
+Renamed `fetchFreshPreviousPage` → `fetchPage` (generic, caller passes page number). Renamed `findGapStories` → `findGapIds` (operates on and returns ID arrays). Updated `handleGaps` to work with IDs throughout.
+
+Replaced `parseStories` with `parseStoryIds(doc)` (returns just IDs). Renamed `getStoriesFromDOM` → `getStoriesFromDoc(storyIds, doc)` (accepts any document). Gap injection uses `getStoriesFromDoc(gapIds, freshDoc)` to resolve story objects from the fetched document. Removed `parseStories` entirely.
+
+Extracted `STORY_ROW_SELECTOR` constant in `parse.js`, used in `parseStoryIds`, `getStoriesFromDoc`, and `render.js`'s `injectGapStories`.
+
+Extracted remaining magic strings in `render.js` into constants in `parse.js`: `TITLE_LINK_SELECTOR`, `DUPLICATE_CLASS`, `DUPLICATE_PREFIX`.
+
+Attempted to fix `storyIds` mutation side effect in `handleGaps` (return gap IDs, let orchestrator push+save), but it caused browser crashes in tests. Reverted.
+
+Extracted dwell time check from `handleGaps` into `isDwellMet(prevSnapshot)` function, called as a policy gate in the orchestrator alongside the other early returns.
+
+Removed Set construction from `handleDuplicates` and `handleGaps`. `findDuplicateIds` and `findGapIds` now take plain arrays and use `.includes()`. Handlers pass `prevSnapshot.storyIds` and `storyIds` directly.
+
+Consolidated `render.js` into `parse.js` — appended `markDuplicates` and `injectGapStories` to the end of `parse.js`. Deleted `render.js`, updated `manifest.json`. Renamed `parse.js` → `page.js` to reflect its broader scope (constants, DOM reads, fetch, DOM writes).
+
+Restructured `test/test.js`: each test is now a standalone function with its own state setup. Runner clears storage before each test. Tests 3-4 navigate to page 1 themselves instead of relying on test 1. Extracted `getServiceWorker` helper, navigation helpers (`goToPage`, `goToPageAndWaitForInjection`), and DOM query helpers (`storyCount`, `storyIds`, `duplicateCount`, `duplicateIds`).
+
+Updated deviations doc with 8 deviations from the original plan (capability-based modules, abstraction levels, ID-based functions, Set removal, constants, dwell extraction, test restructuring, fetchPage generalization). Updated `HOW_IT_WORKS.md` file listing and test description. Updated `README.md` test count. All 14 tests (30 assertions) pass.
+
 ---
