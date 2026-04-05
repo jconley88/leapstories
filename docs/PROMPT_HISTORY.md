@@ -202,4 +202,8 @@ Created an SVG icon (orange side-view frog with page lines across its body) and 
 
 Created `src/popup.html` (compact settings popup reusing `options.js` and `settings.js`) and `src/popup_disabled.html` (inactive message for non-HN pages). Content script sends a message to the background script on HN pages to swap the popup from disabled to settings. No additional permissions required.
 
+## Add MIT license
+
+Comprehensive review of the repo for public release readiness. Added MIT LICENSE file and updated `package.json` license field from ISC to MIT.
+
 ---
