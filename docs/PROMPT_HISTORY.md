@@ -206,4 +206,10 @@ Created `src/popup.html` (compact settings popup reusing `options.js` and `setti
 
 Comprehensive review of the repo for public release readiness. Added MIT LICENSE file and updated `package.json` license field from ISC to MIT.
 
+## Update README and add screenshots for publishing
+
+Planned deployment and distribution strategy (`docs/plans/partitioned-baking-map.md`). Created `docs/PUBLISHING_GUIDE.md` with step-by-step instructions for GitHub, Chrome Web Store, and Firefox Add-ons publishing.
+
+Restructured README for public release: added Chrome Web Store install section (pending approval), screenshot, privacy section, and reorganized into user-facing and development sections. Added annotated screenshots to `assets/`.
+
 ---

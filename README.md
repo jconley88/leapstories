@@ -2,6 +2,8 @@
 
 Browser extension that catches Hacker News stories missed between page navigations.
 
+![LeapStories in action — a captured leap story injected at the top of page 2, and a duplicate story dimmed below](assets/screenshot_readme.png)
+
 ## The problem
 
 When browsing HN, stories shift rank constantly. By the time you finish page 1 and click "More," some stories that were on page 2 may have risen into page 1's range. They disappear from page 2 entirely — you never see them.
@@ -12,30 +14,13 @@ LeapStories records which stories you saw on each page. When you navigate to the
 
 ## Install
 
-1. Open `chrome://extensions`
-2. Enable **Developer mode** (top right)
-3. Click **Load unpacked** and select this project directory
+### Chrome Web Store (recommended)
 
-## Verify
+> **Coming soon** — submitted and awaiting review.
 
-1. Go to https://news.ycombinator.com
-2. Click "More" to go to page 2
-3. If any stories shifted between your page 1 visit and now, they'll appear at the top of page 2
-
-## Testing
-
-```bash
-# Automated test suite — uses local fixtures, no live network
-node test/test.js
-
-# Visual demo — simulates gap stories and leaves browser open for inspection
-node test/demo.js
-
-# Manual testing — opens browser with extension loaded
-node test/open.js
-```
-
-Requires [Playwright](https://playwright.dev/) (`npm install`). Tests use Playwright route interception to serve synthetic and captured HTML fixtures — no connection to live HN.
+<!--
+[Install from Chrome Web Store](https://chrome.google.com/webstore/detail/leapstories/EXTENSION_ID)
+-->
 
 ## Options
 
@@ -52,3 +37,37 @@ Duplicate rows also get the `.leapstories-duplicate` CSS class, so you can targe
 ## Scope
 
 Currently targets only the default top stories listing (`/` and `/news`). Does not run on `/newest`, `/front`, `/ask`, `/show`, or other pages.
+
+## Development
+
+### Manual Install (developer mode)
+
+1. Open `chrome://extensions`
+2. Enable **Developer mode** (top right)
+3. Click **Load unpacked** and select this project directory
+
+### Verify
+
+1. Go to https://news.ycombinator.com
+2. Click "More" to go to page 2 (wait at least 60 seconds default dwell time)
+3. If any stories shifted between your page 1 visit and now, they'll appear at the top of page 2
+
+### Testing
+
+```bash
+node test/test.js # Automated test suite — uses local fixtures, no live network
+node test/demo.js # Visual demo — simulates gap stories and leaves browser open for inspection
+node test/open.js # Manual testing — opens browser with extension loaded
+```
+
+Requires [Playwright](https://playwright.dev/) (`npm install`). Tests use Playwright route interception to serve synthetic and captured HTML fixtures — no connection to live HN.
+
+## Privacy
+
+LeapStories does not collect, transmit, or share any user data. All data is stored locally:
+
+- **Preferences** (chrome.storage.local): duplicate prefix, opacity, dwell time
+- **Page snapshots** (chrome.storage.session): story IDs and timestamps, cleared when the browser closes
+
+The only network requests the extension makes are to `news.ycombinator.com` to re-fetch the previous page for gap detection. No analytics, no tracking, no external servers.
+
