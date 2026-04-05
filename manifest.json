@@ -7,11 +7,14 @@
   "background": {
     "service_worker": "src/background.js"
   },
+  "options_ui": {
+    "page": "src/options.html",
+    "open_in_tab": true
+  },
   "content_scripts": [
     {
       "matches": ["https://news.ycombinator.com/*"],
-      "js": ["src/page.js", "src/storage.js", "src/content.js"],
-      "css": ["src/leapstories.css"]
+      "js": ["src/settings.js", "src/page.js", "src/storage.js", "src/content.js"]
     }
   ]
 }

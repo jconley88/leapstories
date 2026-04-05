@@ -14,8 +14,8 @@ async function handleSaveSnapshot(pageNum) {
   return storyIds;
 }
 
-async function handleDuplicates(storyIds, prevSnapshot) {
-  markDuplicates(findDuplicateIds(storyIds, prevSnapshot.storyIds));
+async function handleDuplicates(storyIds, prevSnapshot, settings) {
+  markDuplicates(findDuplicateIds(storyIds, prevSnapshot.storyIds), settings);
 }
 
 async function isDwellMet(prevSnapshot) {
@@ -45,7 +45,8 @@ async function handleGaps(pageNum, storyIds, prevSnapshot) {
   if (pageNum <= 1) { return }
   const prevSnapshot = await getSnapshot(pageNum - 1);
   if (!prevSnapshot) { return }
-  await handleDuplicates(storyIds, prevSnapshot);
+  const settings = await getSettings();
+  await handleDuplicates(storyIds, prevSnapshot, settings);
   if (!await isDwellMet(prevSnapshot)) { return }
   await handleGaps(pageNum, storyIds, prevSnapshot);
 })();

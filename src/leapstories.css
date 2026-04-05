@@ -1,6 +1,0 @@
-/* LeapStories visual annotations */
-
-/* Duplicate stories: already seen on previous page */
-tr.leapstories-duplicate {
-  opacity: 0.4;
-}

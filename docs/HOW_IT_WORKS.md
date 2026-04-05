@@ -7,7 +7,9 @@ LeapStories is a Manifest V3 Chrome extension with source files in `src/`:
 - **`background.js`** — Service worker that sets `chrome.storage.session` access level so content scripts can use it
 - **`page.js`** — DOM interaction: constants (selectors, CSS classes), page parsing, fetching, duplicate marking, gap story injection
 - **`storage.js`** — `chrome.storage.session` wrapper: snapshot save/load, dwell config
+- **`settings.js`** — `chrome.storage.local` wrapper: user settings read/write with defaults
 - **`content.js`** — Orchestrator: data logic (find duplicates/gaps), handler functions, main control flow
+- **`options.html` / `options.js`** — Extension options page for configuring duplicate prefix text and opacity
 
 ## Lifecycle
 
@@ -39,9 +41,11 @@ Content script exits immediately. No parsing, no storage, no fetching.
 
 ## Storage
 
-Uses `chrome.storage.session` — in-memory, extension-scoped, clears on browser close. Never written to disk, never sent to any server.
+Page snapshots use `chrome.storage.session` — in-memory, extension-scoped, clears on browser close. User settings use `chrome.storage.local` — persisted across sessions. Neither is sent to any server.
 
 ### Schema
+
+**`chrome.storage.session`** (page snapshots):
 
 ```
 Key:   "page_1", "page_2", "page_3", ...
@@ -52,6 +56,16 @@ Value: {
 
 Key:   "leapstories_dwell"
 Value: number             // minimum ms on previous page before re-fetch (default 60000)
+```
+
+**`chrome.storage.local`** (user settings):
+
+```
+Key:   "leapstories_settings"
+Value: {
+  duplicatePrefix:  string,  // text prepended to duplicate titles (default: "seen on previous page — ")
+  duplicateOpacity: number   // opacity for duplicate rows (default: 0.4)
+}
 ```
 
 ### Behavior
@@ -85,7 +99,7 @@ Gap stories are injected using `document.importNode()` to adopt nodes from the f
 
 On page 2+, stories that appear on the current page and were also in the previous page's snapshot are marked as duplicates. These are stories that fell in rank between navigations, causing the user to see them twice.
 
-Duplicates get the `.leapstories-duplicate` CSS class (loaded via `leapstories.css` registered in the manifest), which reduces opacity to `0.4`. Their titles are also prefixed with "seen on previous page — ".
+Duplicates get the `.leapstories-duplicate` CSS class and have their opacity and title prefix set from user settings (defaults: `0.4` opacity, `"seen on previous page — "` prefix). Both values are configurable via the extension's options page. The extension ships no CSS of its own — the class exists purely as a hook for custom user stylesheets.
 
 Duplicate detection runs on every page 2+ load, even when the dwell time check skips gap detection.
 

@@ -182,4 +182,13 @@ Renamed all internal references: extension name in manifest, CSS file (`pagegap.
 
 Plan: `docs/plans/steady-tickling-moonbeam.md`
 
----
+## Add customizable duplicate prefix and opacity settings
+
+Discussed making the pre-title text and CSS opacity for duplicate stories user-configurable. Decided to expose both via an options page backed by `chrome.storage.local`. CSS approach: keep the `.leapstories-duplicate` class on rows for user stylesheets, but move opacity to inline style so it can be driven by settings.
+
+Planned and approved `docs/plans/polished-dazzling-moon.md`. Created `src/settings.js` (read/write settings with defaults), `src/options.html` and `src/options.js` (options page UI). Updated `src/page.js`: removed `DUPLICATE_PREFIX` constant, updated `markDuplicates` to accept a `settings` object, applies `settings.duplicatePrefix` to title and `settings.duplicateOpacity` as inline style. Updated `src/content.js`: loads settings once in the IIFE, threads them to `handleDuplicates`. Updated `src/leapstories.css`: removed hardcoded opacity rule, left class as a comment hook for custom stylesheets. Updated `manifest.json`: added `src/settings.js` to content scripts, added `options_ui`.
+
+Updated `README.md` with an Options section (table of settings, class hook note). Updated `docs/HOW_IT_WORKS.md`: added `settings.js` and `options.html/js` to file listing, updated duplicate detection section, split storage schema into session vs. local with full schemas for both.
+
+Removed `src/leapstories.css` (now empty of rules — opacity moved to inline style) and dropped its entry from `manifest.json`.
+

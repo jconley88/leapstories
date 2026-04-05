@@ -37,6 +37,17 @@ node test/open.js
 
 Requires [Playwright](https://playwright.dev/) (`npm install`). Tests use Playwright route interception to serve synthetic and captured HTML fixtures — no connection to live HN.
 
+## Options
+
+Right-click the extension icon → **Options** (or go to `chrome://extensions` → LeapStories → **Details** → **Extension options**).
+
+| Setting | Default | Description |
+|---|---|---|
+| Duplicate story prefix | `seen on previous page — ` | Text prepended to titles of stories already seen on the previous page |
+| Duplicate story opacity | `0.4` | Opacity applied to dimmed duplicate story rows (0–1) |
+
+Duplicate rows also get the `.leapstories-duplicate` CSS class, so you can target them with your own HN user stylesheet.
+
 ## Scope
 
 Currently targets only the default top stories listing (`/` and `/news`). Does not run on `/newest`, `/front`, `/ask`, `/show`, or other pages.

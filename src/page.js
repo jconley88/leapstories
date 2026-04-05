@@ -1,7 +1,6 @@
 const STORY_ROW_SELECTOR = "tr.athing.submission";
 const TITLE_LINK_SELECTOR = ".titleline > a";
 const DUPLICATE_CLASS = "leapstories-duplicate";
-const DUPLICATE_PREFIX = "seen on previous page \u2014 ";
 
 function getPageNumber() {
   return parseInt(new URLSearchParams(window.location.search).get("p") || "1", 10);
@@ -28,15 +27,19 @@ async function fetchPage(pageNum) {
   return new DOMParser().parseFromString(html, "text/html");
 }
 
-function markDuplicates(duplicateIds) {
+function markDuplicates(duplicateIds, settings) {
   for (const id of duplicateIds) {
     const athingRow = document.getElementById(id);
     if (!athingRow) continue;
     athingRow.classList.add(DUPLICATE_CLASS);
+    athingRow.style.opacity = settings.duplicateOpacity;
     const subtextRow = athingRow.nextElementSibling;
-    if (subtextRow) subtextRow.classList.add(DUPLICATE_CLASS);
+    if (subtextRow) {
+      subtextRow.classList.add(DUPLICATE_CLASS);
+      subtextRow.style.opacity = settings.duplicateOpacity;
+    }
     const titleLink = athingRow.querySelector(TITLE_LINK_SELECTOR);
-    if (titleLink) titleLink.textContent = DUPLICATE_PREFIX + titleLink.textContent;
+    if (titleLink) titleLink.textContent = settings.duplicatePrefix + titleLink.textContent;
   }
 }
 
