@@ -222,4 +222,20 @@ Follow-up to plan `mutable-wobbling-nebula.md`: Fixed two Firefox compatibility 
 
 ## Add Firefox testing support
 
+Planned and approved version check feature (`docs/plans/rippling-jingling-stroustrup.md`). The extension checks GitHub releases for new versions, but only when HN is actively loaded and at most once per calendar day.
+
+Implementation: content script sends `leapstories_check_version` message to background service worker. Background checks `chrome.storage.local` for today's date, fetches GitHub releases API if needed, stores result. On error, still updates the last-checked date. When an update is available, swaps the extension icon to `icon_updateNN.png` variants and shows a version banner in the popup with current/latest versions and links to GitHub releases and the browser extension store. Added `isNewerVersion()` semver utility to `settings.js`. Added release procedure to `CLAUDE.md`. No new permissions required.
+
+Icon paths in `chrome.action.setIcon` require a leading `/` to resolve correctly from the service worker.
+
+Added `chrome.runtime.onInstalled` listener to clear version check data on extension install/update, preventing stale update indicators after upgrading.
+
+Added "Check for updates" checkbox to settings (default: checked). When unchecked, skips version checks and resets the icon to default via `leapstories_reset_icon` message.
+
+Created `src/config.js` with GitHub, Chrome Web Store, and Firefox Add-ons URLs. Background imports it via `importScripts`; popup/options load it via script tag. Update banner links adapt based on browser detection (`typeof browser !== "undefined"`).
+
+Added update UI elements (checkbox, banner, config script) to both `popup.html` and `options.html`.
+
+## Add version update checking
+
 ---

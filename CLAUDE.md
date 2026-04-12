@@ -29,6 +29,17 @@ TBD — project is in initial setup.
 - `node test/open.js` — launch browser with extension for manual testing
 - `node test/test.js` — automated verification of extension loading
 
+## Releasing
+
+The extension checks GitHub releases for updates, so new versions must be published as GitHub releases:
+
+1. Update `version` in `manifest.json` (and `package.json` if desired)
+2. Commit and push to main
+3. Create a GitHub release with tag `vX.Y.Z` (matching the manifest version)
+4. Attach the extension zip if distributing as a packaged file
+
+The version check runs at most once per day when a user visits HN. If a newer release exists, the extension icon changes and the popup shows an update banner linking to the release.
+
 ## Prompt History
 
 Maintain two files tracking any user directive that results in meaningful state changes (file edits, new files, commits, branch operations, etc.). This includes typed prompts, plan approvals, tool confirmations, and any other trigger that causes work to happen — not just direct text prompts.

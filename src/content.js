@@ -36,6 +36,7 @@ async function handleGaps(pageNum, storyIds, prevSnapshot) {
 
 (async function leapstories() {
   chrome.runtime.sendMessage({ type: "leapstories_active" });
+  chrome.runtime.sendMessage({ type: "leapstories_check_version" });
 
   const path = window.location.pathname;
   if (path !== "/" && path !== "/news") return;
