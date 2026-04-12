@@ -4,13 +4,16 @@
   "description": "Browser extension that catches Hacker News stories missed between page navigations.",
   "main": "content.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:firefox": "node scripts/build-firefox.js",
+    "open:firefox": "npm run build:firefox && web-ext run --source-dir dist-firefox"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "type": "commonjs",
   "devDependencies": {
-    "playwright": "^1.59.1"
+    "playwright": "^1.59.1",
+    "web-ext": "^8.4.0"
   }
 }

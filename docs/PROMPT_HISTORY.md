@@ -212,4 +212,14 @@ Planned deployment and distribution strategy (`docs/plans/partitioned-baking-map
 
 Restructured README for public release: added Chrome Web Store install section (pending approval), screenshot, privacy section, and reorganized into user-facing and development sections. Added annotated screenshots to `assets/`.
 
+## Firefox testing support
+
+Designed and built the extension for Chrome. Now want to test on Firefox. Planned and approved `docs/plans/mutable-wobbling-nebula.md`.
+
+Implementing plan `mutable-wobbling-nebula.md`: Guarded `chrome.storage.session.setAccessLevel()` in `src/background.js` (Firefox doesn't support it, doesn't need it). Created `scripts/build-firefox.js` to generate a Firefox-compatible manifest (replaces `service_worker` with `scripts` array, adds `browser_specific_settings.gecko`). Added `web-ext` devDependency and `build:firefox`/`open:firefox` npm scripts. Added `dist-firefox/` to `.gitignore`. Lint passes with zero errors.
+
+Follow-up to plan `mutable-wobbling-nebula.md`: Fixed two Firefox compatibility issues discovered during manual testing. First, the `setAccessLevel` guard crashed because `chrome.storage.session` itself is `undefined` in Firefox — extended the guard to check `chrome.storage.session &&` before accessing `.setAccessLevel`. Second, Firefox doesn't expose `chrome.storage.session` via the `chrome.*` compat shim at all (even though `browser.storage.session` exists in Firefox 115+, it was also undefined in practice). Updated `scripts/build-firefox.js` to patch the copied `storage.js`, replacing `chrome.storage.session` with `browser.storage.local`. Created `docs/plans/mutable-wobbling-nebula_deviations.md`.
+
+## Add Firefox testing support
+
 ---

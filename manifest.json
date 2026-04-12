@@ -21,7 +21,7 @@
   "background": {
     "service_worker": "src/background.js"
   },
-  "options_ui": {
+"options_ui": {
     "page": "src/options.html",
     "open_in_tab": true
   },

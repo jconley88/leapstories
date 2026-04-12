@@ -4,3 +4,4 @@ node_modules/
 *.zip
 .playwright-mcp/
 docs/PROMPT_HISTORY_ORIG.md
+dist-firefox/
