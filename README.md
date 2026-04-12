@@ -1,5 +1,8 @@
 # LeapStories
 
+> [!CAUTION]
+> **AI Disclosure** This project was initially written by AI (Primarily Claude Opus 4.6). See docs/plans* for reviewed plans and docs/PROMPT_HISTORY.md for an attempt at capturing "cleaned up" prompts (it unfortunately reads more like a log). Once "complete", the core script content was reviewed and refactored under closer human inspection and direction. AI was more heavily relied on for proper manifest content and overall extension structure, though these were still briefly reviewed for permissions and security. The firefox build was also heavily AI driven. I am a professional developer with experience in web, but not (much in recent) web extension development. Thus overall, AI enabled a quick web extension build for multiple targets (firefox, chrome) without web extension expertise.
+
 Browser extension that catches Hacker News stories missed between page navigations.
 
 ![LeapStories in action — a captured leap story injected at the top of page 2, and a duplicate story dimmed below](assets/screenshot_readme.png)
@@ -10,7 +13,7 @@ When browsing HN, stories shift rank constantly. By the time you finish page 1 a
 
 ## How it works
 
-LeapStories records which stories you saw on each page. When you navigate to the next page, it silently re-fetches the previous page, compares it against your original snapshot, and injects any stories that rose into the gap at the top of your current page. Stories that fell from the previous page and appear as duplicates are dimmed.
+LeapStories records which stories you saw on each page. When you navigate to the next page, it silently re-fetches the previous page, compares it against your original snapshot, and injects any stories that rose into the gap at the top of your current page. Stories that fell from the previous page and appear as duplicates are dimmed. The extension intentionally attempts to introduce no, or minimal of its own styling.
 
 ## Install
 
