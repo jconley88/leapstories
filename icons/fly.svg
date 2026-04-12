@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="28 30 48 48">
+  <!-- Orange circular background -->
+  <circle cx="52" cy="54" r="23" fill="#ff6600"/>
+
+  <!-- Layer 1 (bottom): Legs -->
+  <line x1="47" y1="49" x2="36" y2="46" stroke="#111111" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="46" y1="53" x2="34" y2="53" stroke="#111111" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="47" y1="57" x2="36" y2="61" stroke="#111111" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="57" y1="49" x2="68" y2="46" stroke="#111111" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="58" y1="53" x2="70" y2="53" stroke="#111111" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="57" y1="57" x2="68" y2="61" stroke="#111111" stroke-width="1.2" stroke-linecap="round"/>
+
+  <!-- Layer 2: Body (abdomen) and thorax -->
+  <ellipse cx="52" cy="54" rx="7" ry="10" fill="#222222"/>
+  <line x1="46" y1="52" x2="58" y2="52" stroke="#555555" stroke-width="2" opacity="0.7"/>
+  <line x1="45" y1="56" x2="59" y2="56" stroke="#555555" stroke-width="2" opacity="0.7"/>
+  <line x1="46" y1="60" x2="58" y2="60" stroke="#555555" stroke-width="2" opacity="0.7"/>
+  <ellipse cx="52" cy="46" rx="5" ry="5" fill="#333333"/>
+
+  <!-- Layer 3: Wings (folded at rest, angled back over body) -->
+  <ellipse cx="47" cy="53" rx="14" ry="6" fill="#ccddff" opacity="0.4" transform="rotate(-65 47 53)"/>
+  <ellipse cx="57" cy="53" rx="14" ry="6" fill="#ccddff" opacity="0.4" transform="rotate(65 57 53)"/>
+  <!-- Shimmer lines aligned to wing major axis -->
+  <line x1="40" y1="60" x2="46" y2="46" stroke="#8899cc" stroke-width="0.5" opacity="0.2"/>
+  <line x1="43" y1="62" x2="51" y2="44" stroke="#8899cc" stroke-width="0.5" opacity="0.35"/>
+  <line x1="46" y1="60" x2="52" y2="46" stroke="#8899cc" stroke-width="0.5" opacity="0.2"/>
+  <line x1="52" y1="46" x2="58" y2="60" stroke="#8899cc" stroke-width="0.5" opacity="0.2"/>
+  <line x1="53" y1="44" x2="61" y2="62" stroke="#8899cc" stroke-width="0.5" opacity="0.35"/>
+  <line x1="58" y1="46" x2="64" y2="60" stroke="#8899cc" stroke-width="0.5" opacity="0.2"/>
+
+  <!-- Layer 4 (top): Head and eyes -->
+  <circle cx="52" cy="39" r="4.5" fill="#222222"/>
+  <circle cx="49" cy="37" r="2.5" fill="#cc2200"/>
+  <circle cx="55" cy="37" r="2.5" fill="#cc2200"/>
+  <circle cx="48.5" cy="36.5" r="0.8" fill="#ff6644" opacity="0.7"/>
+  <circle cx="54.5" cy="36.5" r="0.8" fill="#ff6644" opacity="0.7"/>
+</svg>

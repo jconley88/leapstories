@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="18 10 104 104">
+  <!-- Concept C: Side-view orange frog with page lines, sitting low -->
+
+  <!-- Body (squat, sitting on ground, side view facing right) -->
+  <ellipse cx="62" cy="68" rx="32" ry="22" fill="#ff6600"/>
+
+  <!-- Head (frog profile) -->
+  <ellipse cx="92" cy="56" rx="22" ry="18" fill="#ff6600"/>
+
+  <!-- Snout/nose bump -->
+  <ellipse cx="110" cy="52" rx="8" ry="5" fill="#ff6600"/>
+
+  <!-- Eye (big, prominent, on top of head) -->
+  <circle cx="96" cy="38" r="11" fill="#ff6600"/>
+  <circle cx="96" cy="37" r="8" fill="#ffffff"/>
+  <circle cx="98" cy="36" r="4" fill="#222222"/>
+  <!-- Eye highlight -->
+  <circle cx="95" cy="34" r="1.5" fill="#ffffff"/>
+
+  <!-- Mouth line -->
+  <path d="M 104 58 Q 114 56 118 52" fill="none" stroke="#cc5200" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Nostril -->
+  <circle cx="114" cy="48" r="1.5" fill="#cc5200"/>
+
+  <!-- Page lines across body -->
+  <line x1="40" y1="58" x2="80" y2="58" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+  <line x1="38" y1="66" x2="82" y2="66" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+  <line x1="40" y1="74" x2="78" y2="74" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+  <line x1="44" y1="82" x2="68" y2="82" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+
+  <!-- Front leg (short, touching ground) -->
+  <path d="M 82 84 L 84 92" fill="none" stroke="#ff6600" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="85" cy="94" r="3" fill="#cc5200"/>
+  <circle cx="89" cy="93" r="2.5" fill="#cc5200"/>
+
+  <!-- Back leg (folded haunch, foot flat on ground) -->
+  <path d="M 38 86 Q 30 90 28 94" fill="none" stroke="#ff6600" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="28" cy="94" r="3" fill="#cc5200"/>
+  <circle cx="23" cy="94" r="2.5" fill="#cc5200"/>
+  <circle cx="33" cy="94" r="2.5" fill="#cc5200"/>
+
+  <!-- Belly highlight -->
+  <ellipse cx="65" cy="80" rx="18" ry="5" fill="#ff8533" opacity="0.5"/>
+
+  <!-- Fly sitting on frog's back -->
+  <!-- Layer 1 (bottom): Legs -->
+  <line x1="47" y1="49" x2="36" y2="46" stroke="#111111" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="46" y1="53" x2="34" y2="53" stroke="#111111" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="47" y1="57" x2="36" y2="61" stroke="#111111" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="57" y1="49" x2="68" y2="46" stroke="#111111" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="58" y1="53" x2="70" y2="53" stroke="#111111" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="57" y1="57" x2="68" y2="61" stroke="#111111" stroke-width="1.2" stroke-linecap="round"/>
+
+  <!-- Layer 2: Body (abdomen) and thorax -->
+  <ellipse cx="52" cy="54" rx="7" ry="10" fill="#222222"/>
+  <line x1="46" y1="52" x2="58" y2="52" stroke="#555555" stroke-width="2" opacity="0.7"/>
+  <line x1="45" y1="56" x2="59" y2="56" stroke="#555555" stroke-width="2" opacity="0.7"/>
+  <line x1="46" y1="60" x2="58" y2="60" stroke="#555555" stroke-width="2" opacity="0.7"/>
+  <ellipse cx="52" cy="46" rx="5" ry="5" fill="#333333"/>
+
+  <!-- Layer 3: Wings (folded at rest, angled back over body) -->
+  <ellipse cx="47" cy="53" rx="14" ry="6" fill="#ccddff" opacity="0.4" transform="rotate(-65 47 53)"/>
+  <ellipse cx="57" cy="53" rx="14" ry="6" fill="#ccddff" opacity="0.4" transform="rotate(65 57 53)"/>
+  <!-- Shimmer lines aligned to wing major axis (±65°) -->
+  <!-- Left wing: outer, center, inner -->
+  <line x1="40" y1="60" x2="46" y2="46" stroke="#8899cc" stroke-width="0.5" opacity="0.2"/>
+  <line x1="43" y1="62" x2="51" y2="44" stroke="#8899cc" stroke-width="0.5" opacity="0.35"/>
+  <line x1="46" y1="60" x2="52" y2="46" stroke="#8899cc" stroke-width="0.5" opacity="0.2"/>
+  <!-- Right wing: inner, center, outer -->
+  <line x1="52" y1="46" x2="58" y2="60" stroke="#8899cc" stroke-width="0.5" opacity="0.2"/>
+  <line x1="53" y1="44" x2="61" y2="62" stroke="#8899cc" stroke-width="0.5" opacity="0.35"/>
+  <line x1="58" y1="46" x2="64" y2="60" stroke="#8899cc" stroke-width="0.5" opacity="0.2"/>
+
+  <!-- Layer 4 (top): Head and eyes -->
+  <circle cx="52" cy="39" r="4.5" fill="#222222"/>
+  <circle cx="49" cy="37" r="2.5" fill="#cc2200"/>
+  <circle cx="55" cy="37" r="2.5" fill="#cc2200"/>
+  <circle cx="48.5" cy="36.5" r="0.8" fill="#ff6644" opacity="0.7"/>
+  <circle cx="54.5" cy="36.5" r="0.8" fill="#ff6644" opacity="0.7"/>
+
+  <!-- Tongue arcing from mouth over head to fly (on top of everything) -->
+  <path d="M 112 54 C 108 44, 80 52, 65 56 Q 55 58, 52 50" fill="none" stroke="#ff3366" stroke-width="5" stroke-linecap="round"/>
+  <!-- Tongue tip (sticky pad) -->
+  <circle cx="52" cy="50" r="4.5" fill="#ff3366" opacity="1"/>
+</svg>
