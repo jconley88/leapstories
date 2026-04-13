@@ -256,4 +256,6 @@ Bumped version to 1.1.0 in `manifest.json` and `package.json`. Added v1.1.0 entr
 
 Replaced Chrome Web Store placeholder URL in `README.md` and `src/config.js` with the approved extension link.
 
+Added Firefox install section to `README.md` with a placeholder for the Firefox Add-ons store link and manual install instructions (build dist, load temporary add-on).
+
 ---

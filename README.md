@@ -17,9 +17,25 @@ LeapStories records which stories you saw on each page. When you navigate to the
 
 ## Install
 
-### Chrome Web Store (recommended)
+### Chrome
 
 [Install from Chrome Web Store](https://chromewebstore.google.com/detail/leapstories/mcfonglcjdkcnimpbiohocbmapcglehh)
+
+### Firefox
+
+> **Coming soon**
+
+<!--
+[Install from Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/leapstories/)
+-->
+
+To install manually in the meanwhile:
+
+```bash
+npm run build:firefox
+```
+
+Then in Firefox, go to `about:debugging#/runtime/this-firefox`, click **Load Temporary Add-on**, and select manifest.json inside the `dist-firefox/` directory.
 
 ## Options
 
