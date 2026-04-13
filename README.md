@@ -19,11 +19,7 @@ LeapStories records which stories you saw on each page. When you navigate to the
 
 ### Chrome Web Store (recommended)
 
-> **Coming soon** — submitted and awaiting review.
-
-<!--
-[Install from Chrome Web Store](https://chrome.google.com/webstore/detail/leapstories/EXTENSION_ID)
--->
+[Install from Chrome Web Store](https://chromewebstore.google.com/detail/leapstories/mcfonglcjdkcnimpbiohocbmapcglehh)
 
 ## Options
 

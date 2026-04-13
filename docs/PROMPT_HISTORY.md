@@ -252,4 +252,8 @@ Updated `README.md` options table and privacy section with new gap prefix settin
 
 Bumped version to 1.1.0 in `manifest.json` and `package.json`. Added v1.1.0 entry to `CHANGELOG.md`.
 
+## Add Chrome Web Store link
+
+Replaced Chrome Web Store placeholder URL in `README.md` and `src/config.js` with the approved extension link.
+
 ---
