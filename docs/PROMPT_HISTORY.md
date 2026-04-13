@@ -238,4 +238,10 @@ Added update UI elements (checkbox, banner, config script) to both `popup.html` 
 
 ## Add version update checking
 
+Fixed README privacy statement to mention the optional `api.github.com` request for version checking.
+
+## Fix README privacy statement for version check
+
+Bumped version to 1.0.0 in `manifest.json` (was 0.1.0; `package.json` already at 1.0.0). Created `CHANGELOG.md` summarizing the initial release features.
+
 ---

@@ -1,7 +1,7 @@
 # LeapStories
 
 > [!CAUTION]
-> **AI Disclosure** This project was initially written by AI (Primarily Claude Opus 4.6). See docs/plans* for reviewed plans and docs/PROMPT_HISTORY.md for an attempt at capturing "cleaned up" prompts (it unfortunately reads more like a log). Once "complete", the core script content was reviewed and refactored under closer human inspection and direction. AI was more heavily relied on for proper manifest content and overall extension structure, though these were still briefly reviewed for permissions and security. The firefox build was also heavily AI driven. I am a professional developer with experience in web, but not (much in recent) web extension development. Thus overall, AI enabled a quick web extension build for multiple targets (firefox, chrome) without web extension expertise.
+> **AI Disclosure** This project was initially written by AI (Primarily Claude Opus 4.6). See docs/plans* for reviewed plans and docs/PROMPT_HISTORY.md for an attempt at capturing "cleaned up" prompts (it unfortunately reads more like a log). Once "complete", the core script content was reviewed and refactored under closer human inspection and direction. AI was more heavily relied on for proper manifest content, overall extension structure and update checking, though these were still briefly reviewed for permissions and security. The firefox build was also heavily AI driven. AI enabled a quick web extension build for multiple targets (firefox, chrome) without significant web extension expertise.
 
 Browser extension that catches Hacker News stories missed between page navigations.
 
@@ -72,5 +72,5 @@ LeapStories does not collect, transmit, or share any user data. All data is stor
 - **Preferences** (chrome.storage.local): duplicate prefix, opacity, dwell time
 - **Page snapshots** (chrome.storage.session): story IDs and timestamps, cleared when the browser closes
 
-The only network requests the extension makes are to `news.ycombinator.com` to re-fetch the previous page for gap detection. No analytics, no tracking, no external servers.
+The only network requests the extension makes are to `news.ycombinator.com` (to re-fetch the previous page for gap detection) and, if the "Check for updates" setting is enabled, to `api.github.com` (to check for new releases, at most once per day). No analytics, no tracking, no external servers.
 
