@@ -43,7 +43,7 @@ function markDuplicates(duplicateIds, settings) {
   }
 }
 
-function injectGapStories(gapStories) {
+function injectGapStories(gapStories, settings) {
   if (gapStories.length === 0) return;
   const referenceRow = document.querySelector(STORY_ROW_SELECTOR);
   if (!referenceRow) return;
@@ -56,6 +56,10 @@ function injectGapStories(gapStories) {
     const spacerClone = gap.spacerRow
       ? document.importNode(gap.spacerRow, true)
       : null;
+    if (settings.gapPrefix) {
+      const titleLink = athingClone.querySelector(TITLE_LINK_SELECTOR);
+      if (titleLink) titleLink.textContent = settings.gapPrefix + titleLink.textContent;
+    }
     table.insertBefore(athingClone, referenceRow);
     if (subtextClone) table.insertBefore(subtextClone, referenceRow);
     if (spacerClone) table.insertBefore(spacerClone, referenceRow);

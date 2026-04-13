@@ -23,13 +23,13 @@ function isDwellMet(prevSnapshot, settings) {
   return elapsed >= settings.dwellSeconds * 1000;
 }
 
-async function handleGaps(pageNum, storyIds, prevSnapshot) {
+async function handleGaps(pageNum, storyIds, prevSnapshot, settings) {
   const freshDoc = await fetchPage(pageNum - 1).catch(() => null);
   if (!freshDoc) return;
 
   const freshStoryIds = parseStoryIds(freshDoc);
   const gapIds = findGapIds(freshStoryIds, prevSnapshot.storyIds, storyIds);
-  injectGapStories(getStoriesFromDoc(gapIds, freshDoc));
+  injectGapStories(getStoriesFromDoc(gapIds, freshDoc), settings);
   storyIds.push(...gapIds);
   await saveSnapshot(pageNum, storyIds);
 }
@@ -50,5 +50,5 @@ async function handleGaps(pageNum, storyIds, prevSnapshot) {
   const settings = await getSettings();
   await handleDuplicates(storyIds, prevSnapshot, settings);
   if (!isDwellMet(prevSnapshot, settings)) { return }
-  await handleGaps(pageNum, storyIds, prevSnapshot);
+  await handleGaps(pageNum, storyIds, prevSnapshot, settings);
 })();

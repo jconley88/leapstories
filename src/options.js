@@ -1,3 +1,4 @@
+const gapPrefixInput = document.getElementById("gap-prefix");
 const prefixInput = document.getElementById("duplicate-prefix");
 const opacityInput = document.getElementById("duplicate-opacity");
 const dwellInput = document.getElementById("dwell-seconds");
@@ -5,6 +6,7 @@ const updatesInput = document.getElementById("check-for-updates");
 const status = document.getElementById("status");
 
 getSettings().then((settings) => {
+  gapPrefixInput.value = settings.gapPrefix;
   prefixInput.value = settings.duplicatePrefix;
   opacityInput.value = settings.duplicateOpacity;
   dwellInput.value = settings.dwellSeconds;
@@ -16,6 +18,7 @@ document.getElementById("options-form").addEventListener("submit", async (e) => 
   e.preventDefault();
   const checkForUpdates = updatesInput.checked;
   await saveSettings({
+    gapPrefix: gapPrefixInput.value,
     duplicatePrefix: prefixInput.value,
     duplicateOpacity: parseFloat(opacityInput.value),
     dwellSeconds: parseInt(dwellInput.value, 10),

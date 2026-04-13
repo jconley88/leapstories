@@ -1,4 +1,5 @@
 const SETTINGS_DEFAULTS = {
+  gapPrefix: "",
   duplicatePrefix: "seen on previous page \u2014 ",
   duplicateOpacity: 0.4,
   dwellSeconds: 60,

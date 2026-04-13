@@ -31,6 +31,7 @@ Right-click the extension icon → **Options** (or go to `chrome://extensions` �
 
 | Setting | Default | Description |
 |---|---|---|
+| Gap story prefix | *(empty)* | Text prepended to titles of gap stories injected at the top of the page |
 | Duplicate story prefix | `seen on previous page — ` | Text prepended to titles of stories already seen on the previous page |
 | Duplicate story opacity | `0.4` | Opacity applied to dimmed duplicate story rows (0–1) |
 | Dwell time (seconds) | `60` | Minimum seconds on a page before gap detection activates on the next page |
@@ -69,7 +70,7 @@ Requires [Playwright](https://playwright.dev/) (`npm install`). Tests use Playwr
 
 LeapStories does not collect, transmit, or share any user data. All data is stored locally:
 
-- **Preferences** (chrome.storage.local): duplicate prefix, opacity, dwell time
+- **Preferences** (chrome.storage.local): gap prefix, duplicate prefix, opacity, dwell time
 - **Page snapshots** (chrome.storage.session): story IDs and timestamps, cleared when the browser closes
 
 The only network requests the extension makes are to `news.ycombinator.com` (to re-fetch the previous page for gap detection) and, if the "Check for updates" setting is enabled, to `api.github.com` (to check for new releases, at most once per day). No analytics, no tracking, no external servers.

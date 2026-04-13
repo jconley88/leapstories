@@ -244,4 +244,12 @@ Fixed README privacy statement to mention the optional `api.github.com` request 
 
 Bumped version to 1.0.0 in `manifest.json` (was 0.1.0; `package.json` already at 1.0.0). Created `CHANGELOG.md` summarizing the initial release features.
 
+## Add gap story prefix option
+
+Planned and approved gap story prefix option (`docs/plans/ethereal-zooming-firefly.md`). Added `gapPrefix` setting (default empty string) to `settings.js`. Updated `injectGapStories` in `page.js` to accept settings and prepend the prefix to injected story titles when non-empty. Threaded settings through `handleGaps` in `content.js`. Added gap prefix input to both `options.html` and `popup.html` (placed before the duplicate prefix field). Wired new field in `options.js`.
+
+Updated `README.md` options table and privacy section with new gap prefix setting. Updated `docs/HOW_IT_WORKS.md` lifecycle step 11 and storage schema with `gapPrefix` field.
+
+Bumped version to 1.1.0 in `manifest.json` and `package.json`. Added v1.1.0 entry to `CHANGELOG.md`.
+
 ---

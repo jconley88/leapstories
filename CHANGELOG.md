@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0
+
+- Add configurable gap story prefix — optionally label stories injected from the gap between pages (default: empty/no prefix)
+
 ## 1.0.0 — Initial Release
 
 - Detect stories missed during Hacker News page navigation and inject them at the top of the current page
